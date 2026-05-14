@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#12161c" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+<title>限界ストレッチ | Minite Stretch</title>
+<style>
+:root{
+  --bg:#111418;
+  --bg2:#181d24;
+  --paper:#20262f;
+  --card:#252c36;
+  --ink:#f4f1ea;
+  --muted:#aeb8c5;
+  --soft:#7f8f9b;
+  --line:rgba(255,255,255,.09);
+  --accent:#9db7c2;
+  --accent2:#d8c7a7;
+  --deep:#0d1014;
+  --shadow:0 24px 60px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(157,183,194,.18), transparent 34%),
+    radial-gradient(circle at 90% 10%, rgba(216,199,167,.10), transparent 30%),
+    var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",Meiryo,"Segoe UI",system-ui,sans-serif;
+  line-height:1.75;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.16;
+  background-image:radial-gradient(rgba(244,241,234,.35) .7px, transparent .7px);
+  background-size:20px 20px;
+}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1120px,calc(100% - 44px));margin:auto}
+.top{
+  min-height:82px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  position:relative;
+  z-index:2;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:900;
+  letter-spacing:.01em;
+}
+.mark{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--accent),#edf4f6);
+  color:#10151b;
+  display:grid;
+  place-items:center;
+  font-weight:950;
+  box-shadow:0 12px 28px rgba(157,183,194,.20);
+}
+.brandText{font-size:23px}
+.nav{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  font-weight:750;
+  font-size:14px;
+  color:#dbe2e8;
+}
+.cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  border-radius:18px;
+  background:var(--accent);
+  color:#0d1014;
+  padding:14px 24px;
+  font-weight:900;
+  box-shadow:0 16px 30px rgba(157,183,194,.18);
+}
+.cta.secondary{
+  background:transparent;
+  color:var(--ink);
+  border:1px solid var(--line);
+  box-shadow:none;
+}
+.hero{
+  display:grid;
+  grid-template-columns:.95fr 1.05fr;
+  gap:52px;
+  align-items:center;
+  padding:70px 0 76px;
+  border-bottom:1px solid var(--line);
+}
+.kicker{
+  color:var(--accent2);
+  font-weight:900;
+  font-size:14px;
+  letter-spacing:.08em;
+  margin-bottom:14px;
+}
+.hero h1{
+  font-size:clamp(42px,5.4vw,72px);
+  line-height:1.16;
+  letter-spacing:-.055em;
+  margin:0 0 20px;
+  font-weight:950;
+}
+.lead{
+  font-size:20px;
+  font-weight:850;
+  margin:0 0 18px;
+}
+.desc{
+  margin:0 0 24px;
+  color:var(--muted);
+}
+.checks{
+  display:grid;
+  gap:9px;
+  margin:0 0 28px;
+  padding:0;
+  list-style:none;
+  font-weight:750;
+}
+.checks li:before{
+  content:"✓";
+  display:inline-grid;
+  place-items:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:rgba(157,183,194,.22);
+  color:#dceff5;
+  font-size:13px;
+  margin-right:10px;
+}
+.heroButtons{display:flex;gap:12px;flex-wrap:wrap}
+.subnote{
+  font-size:12px;
+  color:#88939f;
+  margin-top:12px;
+}
+.mockArea{
+  display:grid;
+  grid-template-columns:1fr .85fr;
+  gap:18px;
+  align-items:center;
+}
+.phone{
+  background:#07090c;
+  border-radius:38px;
+  padding:10px;
+  box-shadow:var(--shadow);
+  aspect-ratio:9/18.5;
+}
+.screen{
+  height:100%;
+  border-radius:30px;
+  background:linear-gradient(180deg,#1b2027,#111418);
+  overflow:hidden;
+  color:var(--ink);
+  position:relative;
+  padding:18px;
+  border:1px solid rgba(255,255,255,.05);
+}
+.status{
+  display:flex;
+  justify-content:space-between;
+  color:#ccd4dc;
+  font-size:10px;
+  font-weight:800;
+  opacity:.8;
+}
+.timerBox{
+  margin-top:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.step{color:var(--muted);font-size:13px;font-weight:800}
+.time{font-size:36px;font-weight:950;letter-spacing:.04em}
+.picto{
+  margin:20px 0;
+  height:212px;
+  border-radius:28px;
+  background:rgba(255,255,255,.04);
+  display:grid;
+  place-items:center;
+}
+.picto svg{
+  width:76%;
+  height:76%;
+  stroke:#edf4f6;
+  stroke-width:9;
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  opacity:.9;
+}
+.moveTitle{
+  text-align:center;
+  font-size:24px;
+  font-weight:900;
+  line-height:1.35;
+}
+.moveText{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-top:8px;
+}
+.next{
+  position:absolute;
+  left:18px;
+  right:18px;
+  bottom:70px;
+  padding:12px;
+  border-radius:16px;
+  background:rgba(255,255,255,.04);
+  color:#aeb8c5;
+  text-align:center;
+  font-size:12px;
+}
+.appBtn{
+  position:absolute;
+  left:18px;
+  right:18px;
+  bottom:18px;
+  border-radius:16px;
+  padding:14px;
+  background:var(--accent);
+  color:#0d1014;
+  text-align:center;
+  font-weight:900;
+}
+.sideCards{
+  display:grid;
+  gap:16px;
+}
+.miniCard{
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:22px;
+}
+.miniCard b{
+  display:block;
+  font-size:18px;
+  margin-bottom:8px;
+}
+.miniCard p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+}
+.adDemo{
+  border:1px dashed rgba(255,255,255,.16);
+  color:#82909d;
+  border-radius:18px;
+  padding:18px;
+  text-align:center;
+  font-size:12px;
+  background:rgba(255,255,255,.02);
+}
+.section{
+  padding:58px 0;
+  border-bottom:1px solid var(--line);
+}
+.sectionTitle{
+  text-align:center;
+  font-size:32px;
+  letter-spacing:-.035em;
+  margin:0 0 34px;
+}
+.featureGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+}
+.feature{
+  padding:0 24px;
+  text-align:center;
+  border-right:1px solid var(--line);
+}
+.feature:last-child{border-right:0}
+.icon{
+  font-size:42px;
+  line-height:1;
+  margin-bottom:16px;
+}
+.feature h3,.howItem h3{
+  font-size:17px;
+  margin:0 0 8px;
+}
+.feature p,.howItem p{
+  color:var(--muted);
+  font-size:14px;
+  margin:0;
+}
+.howGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:26px;
+}
+.howItem{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:26px;
+}
+.num{
+  display:inline-grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:rgba(157,183,194,.22);
+  color:#edf4f6;
+  font-weight:950;
+  margin-right:10px;
+}
+.banner{
+  margin:50px auto;
+  background:linear-gradient(135deg,rgba(157,183,194,.13),rgba(216,199,167,.08));
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:32px 42px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:26px;
+  align-items:center;
+}
+.moonBadge{
+  width:72px;
+  height:72px;
+  border-radius:24px;
+  background:rgba(255,255,255,.07);
+  display:grid;
+  place-items:center;
+  font-size:34px;
+}
+.banner h2{margin:0;font-size:30px;letter-spacing:-.03em}
+.banner p{margin:4px 0 0;color:var(--muted)}
+.adWrap{
+  padding:0 0 28px;
+}
+.adSpace{
+  border:1px dashed rgba(255,255,255,.14);
+  border-radius:18px;
+  padding:18px;
+  text-align:center;
+  color:#7e8994;
+  font-size:12px;
+}
+.foot{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  padding:0 0 34px;
+  font-size:13px;
+  color:#98a3af;
+}
+.links{display:flex;gap:24px;flex-wrap:wrap}
+@media(max-width:900px){
+  .wrap{width:min(100% - 28px,680px)}
+  .top{height:auto;padding:18px 0;align-items:flex-start}
+  .nav{gap:12px;font-size:12px;flex-wrap:wrap;justify-content:flex-end}
+  .hero{grid-template-columns:1fr;padding:42px 0 54px}
+  .mockArea{grid-template-columns:1fr;max-width:390px;margin:auto}
+  .sideCards{grid-template-columns:1fr}
+  .featureGrid,.howGrid,.banner{grid-template-columns:1fr}
+  .feature{border-right:0;border-bottom:1px solid var(--line);padding:26px 12px}
+  .feature:last-child{border-bottom:0}
+  .banner{padding:26px}
+  .foot{display:block}
+  .links{margin-bottom:12px}
+  .brandText{font-size:20px}
+  .nav a:not(.cta){display:none}
+}
+</style>
+</head>
+<body>
+<header class="top wrap">
+  <a class="brand" href="index.html" aria-label="限界ストレッチ トップ">
+    <span class="mark">M</span>
+    <span class="brandText">Minite Stretch</span>
+  </a>
+  <nav class="nav">
+    <a href="#features">特徴</a>
+    <a href="#how">使い方</a>
+    <a href="#safety">安心設計</a>
+    <a class="cta" href="app.html">8分だけ試す</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div>
+      <div class="kicker">限界ストレッチ by Minite</div>
+      <h1>頭も体も限界な日に、<br>8分だけ戻す。</h1>
+      <p class="lead">首・肩・腰が終わった人向けの、低刺激ストレッチタイマー。</p>
+      <p class="desc">
+        長時間の作業後、もう文章を読む気力もない時に。<br>
+        大きなピクトグラムと60秒タイマーで、迷わず体をゆるめます。
+      </p>
+      <ul class="checks">
+        <li>スマホでそのまま使えるPWA想定</li>
+        <li>タイマー中に広告を出さない設計</li>
+        <li>運動アプリではなく、限界時のリセット導線</li>
+      </ul>
+      <div class="heroButtons">
+        <a class="cta" href="app.html">8分だけ始める</a>
+        <a class="cta secondary" href="#features">どんなアプリ？</a>
+      </div>
+      <div class="subnote">インストール不要。GitHub Pagesで公開できます。</div>
+    </div>
+
+    <div class="mockArea" aria-label="限界ストレッチのアプリ画面イメージ">
+      <div class="phone">
+        <div class="screen">
+          <div class="status"><span>21:48</span><span>Minite</span></div>
+          <div class="timerBox">
+            <div class="step">3 / 8</div>
+            <div class="time">00:42</div>
+          </div>
+          <div class="picto">
+            <svg viewBox="0 0 240 240" aria-hidden="true">
+              <circle cx="120" cy="50" r="24" />
+              <path d="M120 75 L120 145" />
+              <path d="M70 115 Q120 75 170 115" />
+              <path d="M90 105 L90 75" />
+              <path d="M150 105 L150 75" />
+              <path d="M120 145 L95 205" />
+              <path d="M120 145 L145 205" />
+            </svg>
+          </div>
+          <div class="moveTitle">肩を上げて<br>下ろす</div>
+          <div class="moveText">吸って上げて、吐きながら落とします。</div>
+          <div class="next">次：背中を丸める</div>
+          <div class="appBtn">一時停止</div>
+        </div>
+      </div>
+
+      <div class="sideCards">
+        <div class="miniCard">
+          <b>読む気力がなくてもOK</b>
+          <p>文章よりピクトグラム優先。見た瞬間に真似できるUIを目指します。</p>
+        </div>
+        <div class="miniCard">
+          <b>今日はここまででOK</b>
+          <p>継続圧や達成率で追い込まず、小さく終われる完了画面に。</p>
+        </div>
+        <div class="adDemo">広告スペース<br>トップ・説明・完了画面のみ</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section wrap">
+    <h2 class="sectionTitle">限界時に使えるように</h2>
+    <div class="featureGrid">
+      <div class="feature">
+        <div class="icon">🪑</div>
+        <h3>首肩腰に集中</h3>
+        <p>長時間座った後の重さに合わせた、やさしい8ステップ。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">👁️</div>
+        <h3>低刺激UI</h3>
+        <p>夜でも見やすい暗めの配色。派手な演出は入れません。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🔇</div>
+        <h3>音なしでも成立</h3>
+        <p>音声ガイドは補助。画面だけで使える設計です。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🌙</div>
+        <h3>終わる許可</h3>
+        <p>「もっと頑張ろう」ではなく「今日はここまででOK」で終わります。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="section wrap">
+    <h2 class="sectionTitle">使い方は3つだけ</h2>
+    <div class="howGrid">
+      <div class="howItem">
+        <h3><span class="num">1</span>モードを選ぶ</h3>
+        <p>まずは「首肩腰リセット」から。今後、寝る前・朝向けも追加できます。</p>
+      </div>
+      <div class="howItem">
+        <h3><span class="num">2</span>60秒ずつ真似する</h3>
+        <p>大きなピクトグラムを見ながら、8ステップだけ進みます。</p>
+      </div>
+      <div class="howItem">
+        <h3><span class="num">3</span>終わったら閉じる</h3>
+        <p>記録や連続日数で急かさず、体を少し戻して終了です。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="safety" class="section wrap">
+    <h2 class="sectionTitle">安心して使うために</h2>
+    <div class="howGrid">
+      <div class="howItem">
+        <h3>医療目的ではありません</h3>
+        <p>本アプリは作業後のリフレッシュを目的としたストレッチガイドです。</p>
+      </div>
+      <div class="howItem">
+        <h3>痛い動きはしない</h3>
+        <p>反動をつける動きや、首を強く回す動きは避けた構成にします。</p>
+      </div>
+      <div class="howItem">
+        <h3>無理なら止める</h3>
+        <p>痛みや違和感がある場合は、使用を中止してください。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="banner wrap">
+    <div class="moonBadge">🌙</div>
+    <div>
+      <h2>一旦、体だけ戻そう。</h2>
+      <p>限界の日でも、自分を雑に扱わないための小さな回復導線。</p>
+    </div>
+    <div>
+      <a class="cta" href="app.html">8分だけ試す</a>
+      <div class="subnote">タイマー中に広告は表示しません。</div>
+    </div>
+  </section>
+
+  <section class="adWrap wrap" aria-label="広告エリア">
+    <div class="adSpace">
+      AdSense広告スペース予定<br>
+      ※トップ・説明・完了画面のみ。タイマー中は非表示。
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <div class="links">
+    <a href="privacy.html">プライバシーポリシー</a>
+    <a href="terms.html">利用規約</a>
+    <a href="https://forms.gle/qpzK8fobsCCJGdVa9" target="_blank" rel="noopener">お問い合わせ</a>
+  </div>
+  <div>© 2026 Minite Stretch</div>
+</footer>
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>

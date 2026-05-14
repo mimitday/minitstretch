@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#121417" />
+  <title>8分ストレッチ | Minite Stretch</title>
+  <style>
+    :root {
+      --bg: #121417;
+      --card: #1b1f24;
+      --soft: #252b33;
+      --text: #f5f5f5;
+      --sub: #aeb6c2;
+      --accent: #89a7b1;
+      --shadow: rgba(0,0,0,0.35);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif;
+      min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px;
+    }
+    .app {
+      width: 100%; max-width: 430px; background: linear-gradient(180deg, #1a1e23 0%, #121417 100%);
+      border-radius: 28px; padding: 20px; box-shadow: 0 20px 40px var(--shadow);
+      min-height: 88vh; display: flex; flex-direction: column; position: relative; overflow: hidden;
+    }
+    .screen { display: none; flex: 1; flex-direction: column; animation: fade .25s ease; }
+    .screen.active { display: flex; }
+    @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .logo { font-size: 14px; color: var(--sub); margin-bottom: 12px; letter-spacing: .04em; }
+    h1 { font-size: 32px; line-height: 1.2; margin: 0; font-weight: 800; }
+    .lead { color: var(--sub); line-height: 1.7; margin-top: 14px; font-size: 15px; }
+    .mode-card { margin-top: 28px; background: var(--card); border: 1px solid rgba(255,255,255,.04); border-radius: 22px; padding: 18px; display: flex; gap: 16px; align-items: center; }
+    .mode-icon { width: 64px; height: 64px; border-radius: 18px; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 34px; flex-shrink: 0; }
+    .mode-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .mode-desc { color: var(--sub); font-size: 14px; line-height: 1.5; }
+    .button { border: none; border-radius: 18px; background: var(--accent); color: #111; font-size: 18px; font-weight: 800; padding: 18px; margin-top: auto; cursor: pointer; }
+    .sub-button { border: none; border-radius: 14px; background: var(--soft); color: var(--text); padding: 14px; font-size: 15px; cursor: pointer; }
+    .timer-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .step-count { color: var(--sub); font-size: 14px; }
+    .time { font-size: 42px; font-weight: 900; letter-spacing: .04em; }
+    .pictogram { width: 100%; height: 280px; border-radius: 28px; background: rgba(255,255,255,.03); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; overflow: hidden; }
+    .pictogram svg { width: 85%; height: 85%; stroke: #e6eef5; stroke-width: 10; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
+    .stretch-name { font-size: 28px; font-weight: 800; margin-bottom: 10px; text-align: center; }
+    .stretch-guide { color: var(--sub); text-align: center; line-height: 1.7; min-height: 48px; padding: 0 12px; }
+    .next { margin-top: 22px; background: rgba(255,255,255,.03); border-radius: 16px; padding: 14px; color: var(--sub); text-align: center; font-size: 14px; }
+    .controls { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .complete-wrap { flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+    .complete-icon { font-size: 64px; margin-bottom: 20px; }
+    .complete-title { font-size: 34px; font-weight: 900; margin-bottom: 12px; }
+    .complete-text { color: var(--sub); line-height: 1.9; font-size: 16px; }
+    .footer-note { margin-top: 24px; color: #7d8794; font-size: 11px; line-height: 1.7; text-align: center; }
+    .ad-space { margin-top: 16px; border: 1px dashed rgba(255,255,255,.08); border-radius: 16px; padding: 16px; text-align: center; color: #76808c; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section id="homeScreen" class="screen active">
+      <div class="logo">Minite Stretch</div>
+      <h1>限界ストレッチ</h1>
+      <div class="lead">頭も体も限界な時の、<br />8分だけ体を戻すストレッチ。</div>
+      <div class="mode-card">
+        <div class="mode-icon">🪑</div>
+        <div>
+          <div class="mode-title">首肩腰リセット</div>
+          <div class="mode-desc">長時間座ったあと向け。<br />首・肩・背中・腰をゆっくりゆるめます。</div>
+        </div>
+      </div>
+      <div class="ad-space">広告スペース</div>
+      <button class="button" id="startButton">8分だけ始める</button>
+      <div class="footer-note">このアプリは医療行為・治療を目的としたものではありません。<br />無理のない範囲でご利用ください。</div>
+    </section>
+
+    <section id="timerScreen" class="screen">
+      <div class="timer-top">
+        <div class="step-count" id="stepCount">1 / 8</div>
+        <div class="time" id="timeText">01:00</div>
+      </div>
+      <div class="pictogram" id="pictogram"></div>
+      <div class="stretch-name" id="stretchName"></div>
+      <div class="stretch-guide" id="stretchGuide"></div>
+      <div class="next" id="nextMove"></div>
+      <div class="controls">
+        <button class="sub-button" id="pauseButton">一時停止</button>
+        <button class="sub-button" id="stopButton">終了</button>
+      </div>
+    </section>
+
+    <section id="completeScreen" class="screen">
+      <div class="complete-wrap">
+        <div class="complete-icon">🌙</div>
+        <div class="complete-title">おつかれさま</div>
+        <div class="complete-text">今日はここまででOK。<br />少しだけ、体を戻しました。</div>
+        <div class="ad-space">広告スペース</div>
+        <button class="button" id="restartButton">もう一回</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const neckRightSVG = `<svg viewBox="0 0 240 240"><circle cx="120" cy="55" r="26" /><path d="M120 82 L120 140" /><path d="M120 100 Q160 110 170 150" /><path d="M120 100 Q85 115 90 155" /><path d="M120 140 L95 205" /><path d="M120 140 L145 205" /></svg>`;
+    const neckLeftSVG = `<svg viewBox="0 0 240 240"><circle cx="120" cy="55" r="26" /><path d="M120 82 L120 140" /><path d="M120 100 Q80 110 70 150" /><path d="M120 100 Q155 115 150 155" /><path d="M120 140 L95 205" /><path d="M120 140 L145 205" /></svg>`;
+    const shoulderSVG = `<svg viewBox="0 0 240 240"><circle cx="120" cy="50" r="24" /><path d="M120 75 L120 145" /><path d="M70 115 Q120 75 170 115" /><path d="M90 105 L90 75" /><path d="M150 105 L150 75" /><path d="M120 145 L95 205" /><path d="M120 145 L145 205" /></svg>`;
+    const backSVG = `<svg viewBox="0 0 240 240"><path d="M75 70 Q115 20 165 70" /><path d="M85 70 Q55 135 100 190" /><path d="M100 190 L145 190" /><path d="M145 190 Q190 120 145 70" /></svg>`;
+    const chestSVG = `<svg viewBox="0 0 240 240"><circle cx="120" cy="48" r="24" /><path d="M120 72 L120 145" /><path d="M120 105 L60 85" /><path d="M120 105 L180 85" /><path d="M120 145 L95 205" /><path d="M120 145 L145 205" /><path d="M60 85 L45 60" /><path d="M180 85 L195 60" /></svg>`;
+    const twistSVG = `<svg viewBox="0 0 240 240"><circle cx="120" cy="45" r="22" /><path d="M120 70 L120 140" /><path d="M120 100 Q160 120 175 150" /><path d="M120 100 Q80 120 65 150" /><path d="M120 140 L100 205" /><path d="M120 140 L145 205" /></svg>`;
+    const foldSVG = `<svg viewBox="0 0 240 240"><path d="M120 35 Q150 35 150 65" /><path d="M150 65 Q120 95 120 135" /><path d="M120 135 L90 205" /><path d="M120 135 L145 205" /><path d="M120 135 Q165 150 190 170" /></svg>`;
+    const breatheSVG = `<svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="70" /><path d="M120 70 L120 170" /><path d="M70 120 L170 120" /></svg>`;
+
+    const stretches = [
+      { name: '首を右に倒す', guide: '肩の力を抜いて、ゆっくり呼吸します。', voice: '首を右に倒します。ゆっくり息を吐きます。', icon: neckRightSVG },
+      { name: '首を左に倒す', guide: '反動をつけず、ゆっくり伸ばします。', voice: '首を左に倒します。', icon: neckLeftSVG },
+      { name: '肩を上げて下ろす', guide: '吸って上げて、吐きながら落とします。', voice: '肩をゆっくり上げて下ろします。', icon: shoulderSVG },
+      { name: '背中を丸める', guide: '猫みたいに、背中を丸めます。', voice: '背中を丸めます。', icon: backSVG },
+      { name: '胸を開く', guide: '肩甲骨を寄せるイメージ。', voice: '胸を開きます。', icon: chestSVG },
+      { name: '腰をゆっくりひねる', guide: '痛くない範囲でゆっくり。', voice: '腰をゆっくりひねります。', icon: twistSVG },
+      { name: '前にゆるく倒れる', guide: '首の力を抜きます。', voice: '前にゆるく倒れます。', icon: foldSVG },
+      { name: '深呼吸', guide: '吸って、吐いて、終了です。', voice: '深呼吸します。おつかれさまでした。', icon: breatheSVG }
+    ];
+
+    const homeScreen = document.getElementById('homeScreen');
+    const timerScreen = document.getElementById('timerScreen');
+    const completeScreen = document.getElementById('completeScreen');
+    const startButton = document.getElementById('startButton');
+    const pauseButton = document.getElementById('pauseButton');
+    const stopButton = document.getElementById('stopButton');
+    const restartButton = document.getElementById('restartButton');
+    const timeText = document.getElementById('timeText');
+    const stretchName = document.getElementById('stretchName');
+    const stretchGuide = document.getElementById('stretchGuide');
+    const pictogram = document.getElementById('pictogram');
+    const nextMove = document.getElementById('nextMove');
+    const stepCount = document.getElementById('stepCount');
+
+    let currentStep = 0;
+    let currentTime = 60;
+    let timer = null;
+    let paused = false;
+
+    startButton.addEventListener('click', startRoutine);
+    restartButton.addEventListener('click', startRoutine);
+    pauseButton.addEventListener('click', () => {
+      paused = !paused;
+      pauseButton.textContent = paused ? '再開' : '一時停止';
+    });
+    stopButton.addEventListener('click', () => {
+      clearInterval(timer);
+      showScreen(homeScreen);
+    });
+
+    function startRoutine() {
+      currentStep = 0;
+      currentTime = 60;
+      paused = false;
+      pauseButton.textContent = '一時停止';
+      showScreen(timerScreen);
+      loadStep();
+      clearInterval(timer);
+      timer = setInterval(() => {
+        if (paused) return;
+        currentTime--;
+        updateTime();
+        if (currentTime <= 0) {
+          currentStep++;
+          if (currentStep >= stretches.length) {
+            finishRoutine();
+            return;
+          }
+          currentTime = 60;
+          loadStep();
+        }
+      }, 1000);
+    }
+
+    function loadStep() {
+      const step = stretches[currentStep];
+      stretchName.textContent = step.name;
+      stretchGuide.textContent = step.guide;
+      pictogram.innerHTML = step.icon;
+      stepCount.textContent = `${currentStep + 1} / ${stretches.length}`;
+      const next = stretches[currentStep + 1];
+      nextMove.textContent = next ? `次：${next.name}` : '最後です';
+      updateTime();
+      vibrate();
+      speak(step.voice);
+    }
+
+    function updateTime() {
+      const min = String(Math.floor(currentTime / 60)).padStart(2, '0');
+      const sec = String(currentTime % 60).padStart(2, '0');
+      timeText.textContent = `${min}:${sec}`;
+    }
+
+    function finishRoutine() {
+      clearInterval(timer);
+      vibrate([200, 120, 200]);
+      showScreen(completeScreen);
+    }
+
+    function showScreen(screen) {
+      [homeScreen, timerScreen, completeScreen].forEach(s => s.classList.remove('active'));
+      screen.classList.add('active');
+    }
+
+    function vibrate(pattern = 80) {
+      if (navigator.vibrate) navigator.vibrate(pattern);
+    }
+
+    function speak(text) {
+      if (!('speechSynthesis' in window)) return;
+      speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'ja-JP';
+      utter.rate = 0.92;
+      utter.pitch = 1;
+      speechSynthesis.speak(utter);
+    }
+  </script>
+</body>
+</html>
