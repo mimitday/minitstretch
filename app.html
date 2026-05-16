@@ -126,11 +126,42 @@
     }
 
     .hero-figure {
-      width: 150px;
-      height: 150px;
+      width: 170px;
+      height: 170px;
       margin: 0 auto 6px;
       display: grid;
       place-items: center;
+      color: var(--text);
+    }
+
+    .hero-figure svg {
+      width: 170px;
+      height: 170px;
+      stroke: var(--text);
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 8px 14px rgba(0,0,0,.45));
+    }
+
+    .hero-figure .hero-stick {
+      animation: limitStretch 2.6s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: 105px 137px;
+    }
+
+    .hero-figure .hero-sweat {
+      animation: sweatDrop 1.8s ease-in-out infinite;
+    }
+
+    @keyframes limitStretch {
+      0%, 100% { transform: rotate(-3deg) translateY(0); }
+      50% { transform: rotate(5deg) translateY(3px); }
+    }
+
+    @keyframes sweatDrop {
+      0%, 100% { opacity: .35; transform: translateY(-2px); }
+      50% { opacity: 1; transform: translateY(3px); }
     }
 
     .button {
@@ -262,10 +293,99 @@
     }
 
     .time {
-      font-size: 34px;
-      font-weight: 950;
+      font-size: 24px;
+      font-weight: 900;
       letter-spacing: .03em;
       margin-top: 2px;
+      color: var(--sub);
+    }
+
+    .current-time-wrap {
+      text-align: center;
+      margin: 4px 0 14px;
+    }
+
+    .current-label {
+      color: var(--sub);
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .current-time {
+      font-size: 68px;
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: .02em;
+    }
+
+    .step-progress {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.18);
+      overflow: hidden;
+      width: min(100%, 260px);
+      margin: 12px auto 0;
+    }
+
+    .step-progress > div {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: inherit;
+      transition: width .25s linear;
+    }
+
+    .inline-ad {
+      display: none;
+      margin: 0 0 14px;
+    }
+
+    .inline-ad.show {
+      display: grid;
+    }
+
+    .reward-box {
+      border: 1px solid rgba(246,201,69,.28);
+      background: rgba(246,201,69,.08);
+      border-radius: 18px;
+      padding: 14px;
+      margin: 14px 0;
+      text-align: center;
+    }
+
+    .star-count {
+      font-size: 18px;
+      font-weight: 900;
+      margin-top: 10px;
+      color: var(--accent2);
+    }
+
+    .reward-message {
+      color: var(--sub);
+      font-size: 13px;
+      min-height: 20px;
+      margin-top: 8px;
+    }
+
+    .language-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .lang-button {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .lang-button.active {
+      background: var(--accent);
+      color: #16120a;
+      border-color: transparent;
     }
 
     .step-count {
@@ -594,13 +714,13 @@
       <div class="hero">
         <div class="hero-figure" id="homeIcon"></div>
         <div>
-          <h1>限界ストレッチ</h1>
-          <div class="lead">6分でちょっと楽に。<br />押したら、あとは自動で進みます。</div>
+          <h1 data-i18n="appTitle">限界ストレッチ</h1>
+          <div class="lead" data-i18n-html="lead">6分でちょっと楽に。<br />押したら、あとは自動で進みます。</div>
         </div>
       </div>
 
-      <button class="button" id="goMenuButton">はじめる</button>
-      <div class="footer-note">医療行為・治療目的ではありません。痛みがある時は中止してください。</div>
+      <button class="button" id="goMenuButton" data-i18n="start">はじめる</button>
+      <div class="footer-note" data-i18n="medicalNote">医療行為・治療目的ではありません。痛みがある時は中止してください。</div>
     </section>
 
     <section id="menuScreen" class="screen">
@@ -610,9 +730,9 @@
         <button class="icon-button" id="menuSettingsButton" aria-label="設定">⚙</button>
       </div>
 
-      <h2>今日はどこが限界？</h2>
+      <h2 data-i18n="menuHeading">今日はどこが限界？</h2>
       <div class="menu-list" id="menuList"></div>
-      <div class="menu-footer">メニュー選択後、開始前に広告が入ります</div>
+      <div class="menu-footer" data-i18n="menuFooter">メニュー選択後、開始前に広告が入ります</div>
     </section>
 
     <section id="preAdScreen" class="screen">
@@ -625,8 +745,8 @@
       <div class="hero">
         <h2 id="preAdTitle">開始前広告</h2>
         <div class="ad-space">広告スペース<br />AdSenseコードをここに配置</div>
-        <button class="button" id="startSelectedButton">ストレッチ開始</button>
-        <div class="footer-note">カウントダウンOFFなら、この後すぐ開始します。</div>
+        <button class="button" id="startSelectedButton" data-i18n="startStretch">ストレッチ開始</button>
+        <div class="footer-note" data-i18n="countdownOffNote">カウントダウンOFFなら、この後すぐ開始します。</div>
       </div>
     </section>
 
@@ -635,7 +755,7 @@
         <div>
           <div class="countdown-menu" id="countdownMenuName">首肩限界</div>
           <div class="countdown-num" id="countdownNum">3</div>
-          <div class="countdown-text">準備してください</div>
+          <div class="countdown-text" data-i18n="prepare">準備してください</div>
         </div>
       </div>
     </section>
@@ -647,12 +767,20 @@
           <div class="routine-name" id="routineName">首肩限界</div>
         </div>
         <div class="time-wrap">
-          <div class="remain-label">残り</div>
-          <div class="time" id="timeText">06:00</div>
+          <div class="remain-label" data-i18n="totalRemaining">トータル残り時間</div>
+          <div class="time" id="timeText">残り 06:00</div>
         </div>
       </div>
 
       <div class="top-progress"><div id="totalProgress"></div></div>
+
+      <div class="current-time-wrap">
+        <div class="current-label" data-i18n="currentCount">現在40秒カウント</div>
+        <div class="current-time" id="currentTimeText">00:40</div>
+        <div class="step-progress"><div id="stepProgress"></div></div>
+      </div>
+
+      <div class="inline-ad ad-space" id="inlineAd">広告スペース<br />最後の動作中に表示</div>
 
       <div class="pictogram" id="pictogram"></div>
       <div class="stretch-name" id="stretchName"></div>
@@ -661,27 +789,32 @@
       <div class="next" id="nextMove"></div>
 
       <div class="controls">
-        <button class="sub-button" id="pauseButton">一時停止</button>
-        <button class="sub-button danger-button" id="stopButton">終了</button>
+        <button class="sub-button" id="pauseButton" data-i18n="pause">一時停止</button>
+        <button class="sub-button danger-button" id="stopButton" data-i18n="end">終了</button>
       </div>
     </section>
 
     <section id="pauseScreen" class="screen">
       <div class="pause-menu">
-        <div class="pause-title">一時停止</div>
-        <button class="button" id="resumeButton">▶ 再開</button>
-        <button class="sub-button" id="restartRoutineButton">最初から</button>
-        <button class="sub-button danger-button" id="pauseEndButton">終了</button>
+        <div class="pause-title" data-i18n="pause">一時停止</div>
+        <button class="button" id="resumeButton" data-i18n="resume">▶ 再開</button>
+        <button class="sub-button" id="restartRoutineButton" data-i18n="restart">最初から</button>
+        <button class="sub-button danger-button" id="pauseEndButton" data-i18n="end">終了</button>
       </div>
     </section>
 
     <section id="completeScreen" class="screen">
       <div class="complete-wrap">
         <div class="complete-figure" id="completeIcon"></div>
-        <div class="complete-title">おつかれさま！</div>
-        <div class="complete-text">6分できました。<br />今日はここまででOK。</div>
+        <div class="complete-title" data-i18n="completeTitle">おつかれさま！</div>
+        <div class="complete-text" data-i18n-html="completeText">6分できました。<br />今日はここまででOK。</div>
         <div class="ad-space">広告スペース<br />AdSenseコードをここに配置</div>
-        <button class="button" id="homeButton">ホームへ戻る</button>
+        <div class="reward-box">
+          <button class="button" id="claimStarButton" data-i18n="claimStar">★を受け取る</button>
+          <div class="reward-message" id="rewardMessage"></div>
+          <div class="star-count" id="starCount">現在：★ 0</div>
+        </div>
+        <button class="button" id="homeButton" data-i18n="homeBack">ホームへ戻る</button>
       </div>
     </section>
 
@@ -692,30 +825,41 @@
         <div></div>
       </div>
 
-      <h2>設定</h2>
+      <h2 data-i18n="settings">設定</h2>
       <div class="setting-list">
         <div class="setting-row">
           <div>
-            <div class="setting-title">音</div>
-            <div class="setting-desc">動作切り替え時に小さくポーン</div>
+            <div class="setting-title" data-i18n="soundSetting">音</div>
+            <div class="setting-desc" data-i18n="soundDesc">動作切り替え時に小さくポーン</div>
           </div>
           <button class="switch on" id="soundSwitch" aria-label="音ON/OFF"></button>
         </div>
 
         <div class="setting-row">
           <div>
-            <div class="setting-title">バイブ</div>
-            <div class="setting-desc">対応端末のみ短く振動</div>
+            <div class="setting-title" data-i18n="vibeSetting">バイブ</div>
+            <div class="setting-desc" data-i18n="vibeDesc">対応端末のみ短く振動</div>
           </div>
           <button class="switch on" id="vibeSwitch" aria-label="バイブON/OFF"></button>
         </div>
 
         <div class="setting-row">
           <div>
-            <div class="setting-title">開始カウントダウン</div>
-            <div class="setting-desc">OFFなら広告後すぐ開始</div>
+            <div class="setting-title" data-i18n="countdownSetting">開始カウントダウン</div>
+            <div class="setting-desc" data-i18n="countdownDesc">OFFなら広告後すぐ開始</div>
           </div>
           <button class="switch" id="countdownSwitch" aria-label="開始カウントダウンON/OFF"></button>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="setting-title" data-i18n="languageSetting">言語</div>
+            <div class="setting-desc" data-i18n="languageDesc">表示言語を切り替えます</div>
+          </div>
+          <div class="language-buttons">
+            <button class="lang-button" id="langJaButton" type="button">JP</button>
+            <button class="lang-button" id="langEnButton" type="button">EN</button>
+          </div>
         </div>
       </div>
 
@@ -725,18 +869,103 @@
 
   <script>
     const STEP_SECONDS = 40;
+    const STORAGE_KEYS = {
+      settings: 'miniteStretchSettings',
+      stars: 'miniteStretchStars'
+    };
+
+    const browserLang = (navigator.language || 'ja').toLowerCase().startsWith('ja') ? 'ja' : 'en';
+
+    const i18n = {
+      ja: {
+        appTitle: '限界ストレッチ',
+        lead: '6分でちょっと楽に。<br />押したら、あとは自動で進みます。',
+        start: 'はじめる',
+        medicalNote: '医療行為・治療目的ではありません。痛みがある時は中止してください。',
+        menuHeading: '今日はどこが限界？',
+        menuFooter: 'メニュー選択後、開始前に広告が入ります',
+        startStretch: 'ストレッチ開始',
+        countdownOffNote: 'カウントダウンOFFなら、この後すぐ開始します。',
+        prepare: '準備してください',
+        totalRemaining: 'トータル残り時間',
+        currentCount: '現在40秒カウント',
+        pause: '一時停止',
+        resume: '▶ 再開',
+        restart: '最初から',
+        end: '終了',
+        completeTitle: 'おつかれさま！',
+        completeText: '6分できました。<br />今日はここまででOK。',
+        claimStar: '★を受け取る',
+        claimedStar: '★を1つ受け取りました',
+        alreadyClaimed: '受け取り済みです',
+        starNow: '現在：★ {count}',
+        homeBack: 'ホームへ戻る',
+        settings: '設定',
+        soundSetting: '音',
+        soundDesc: '動作切り替え時に小さくポーン',
+        vibeSetting: 'バイブ',
+        vibeDesc: '対応端末のみ短く振動',
+        countdownSetting: '開始カウントダウン',
+        countdownDesc: 'OFFなら広告後すぐ開始',
+        languageSetting: '言語',
+        languageDesc: '表示言語を切り替えます',
+        next: '次：{name}',
+        last: '最後です',
+        finalAd: '広告スペース<br />最後の動作中に表示'
+      },
+      en: {
+        appTitle: 'Limit Stretch',
+        lead: 'Feel a little better in 6 minutes.<br />Press start, then it moves on automatically.',
+        start: 'Start',
+        medicalNote: 'This is not medical treatment. Stop if you feel pain.',
+        menuHeading: 'What is exhausted today?',
+        menuFooter: 'An ad appears before the routine starts.',
+        startStretch: 'Start stretch',
+        countdownOffNote: 'If countdown is OFF, it starts right after this.',
+        prepare: 'Get ready',
+        totalRemaining: 'Total time left',
+        currentCount: 'Current 40-sec count',
+        pause: 'Pause',
+        resume: '▶ Resume',
+        restart: 'Restart',
+        end: 'End',
+        completeTitle: 'Good job!',
+        completeText: 'You completed 6 minutes.<br />That is enough for today.',
+        claimStar: 'Receive ★',
+        claimedStar: 'You received 1 ★',
+        alreadyClaimed: 'Already received',
+        starNow: 'Now: ★ {count}',
+        homeBack: 'Back home',
+        settings: 'Settings',
+        soundSetting: 'Sound',
+        soundDesc: 'Small beep when the move changes',
+        vibeSetting: 'Vibration',
+        vibeDesc: 'Short vibration on supported devices',
+        countdownSetting: 'Start countdown',
+        countdownDesc: 'If OFF, start right after the ad',
+        languageSetting: 'Language',
+        languageDesc: 'Switch display language',
+        next: 'Next: {name}',
+        last: 'Last move',
+        finalAd: 'Ad space<br />Shown during the final move'
+      }
+    };
+
 
     const icons = {
       home: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="112" cy="60" r="22"></circle>
-        <path d="M112 84 L103 143"></path>
-        <path d="M106 102 Q78 115 75 145"></path>
-        <path d="M107 101 Q136 93 151 66"></path>
-        <path d="M103 143 L82 205"></path>
-        <path d="M103 143 L128 205"></path>
-        <path class="accent-stroke" d="M162 48 L174 33"></path>
-        <path class="accent-stroke" d="M170 68 L190 61"></path>
-        <path class="accent-stroke" d="M162 86 L177 101"></path>
+        <g class="hero-stick" stroke-width="8">
+          <circle cx="112" cy="58" r="21"></circle>
+          <path d="M112 82 C104 106 94 126 80 146"></path>
+          <path d="M94 104 C72 111 59 127 52 150"></path>
+          <path d="M96 104 C126 95 149 75 169 48"></path>
+          <path d="M80 146 C67 168 59 187 52 207"></path>
+          <path d="M80 146 C102 165 119 184 136 208"></path>
+        </g>
+        <path class="accent-stroke hero-sweat" stroke-width="6" d="M159 83 C168 91 166 101 157 108"></path>
+        <path class="accent-stroke" stroke-width="6" d="M179 43 L193 27"></path>
+        <path class="accent-stroke" stroke-width="6" d="M187 66 L211 61"></path>
+        <path class="accent-stroke" stroke-width="6" d="M176 91 L194 110"></path>
       </svg>`,
 
       head: `<svg viewBox="0 0 240 240" aria-hidden="true">
@@ -915,15 +1144,15 @@
         desc: '目・頭・首をゆるめる',
         icon: icons.head,
         moves: [
-          ['目を閉じて深呼吸', 'まぶたを閉じて、ゆっくり吸って吐きます。', icons.breathe, 'move-breathe'],
-          ['こめかみを軽く押す', '痛くない強さで、ふわっと押します。', icons.head, 'move-breathe'],
           ['首を右に倒す', '肩を下げたまま、ゆっくり右へ。', icons.neck, 'move-neck-right'],
           ['首を左に倒す', '反動をつけず、ゆっくり左へ。', icons.neck, 'move-neck-left'],
           ['あごを引く', '首の後ろを長くするイメージ。', icons.back, 'move-side'],
           ['肩をすくめて下ろす', '吸って上げて、吐いてストン。', icons.shoulder, 'move-shoulder'],
+          ['肩をゆっくり回す', '小さく、無理なく回します。', icons.shoulder, 'move-shoulder'],
           ['胸を開く', '肩甲骨を軽く寄せます。', icons.chest, 'move-side'],
           ['背中を丸める', '背中をふわっと丸めます。', icons.back, 'move-side'],
-          ['目を遠くに向ける', '画面から目を離して、遠くを見ます。', icons.breathe, 'move-breathe']
+          ['こめかみを軽く押す', '痛くない強さで、ふわっと押します。', icons.head, 'move-breathe'],
+          ['目を閉じる', 'まぶたを閉じて、ゆっくり呼吸します。', icons.breathe, 'move-breathe']
         ]
       },
       neck: {
@@ -1008,6 +1237,32 @@
       }
     };
 
+
+    const menuText = {
+      en: {
+        head: {
+          label: 'Head exhausted',
+          desc: 'Relax eyes, head, and neck',
+          moves: [
+            ['Tilt neck right', 'Keep shoulders down and slowly tilt right.'],
+            ['Tilt neck left', 'Move slowly to the left without bouncing.'],
+            ['Tuck your chin', 'Imagine lengthening the back of your neck.'],
+            ['Lift and drop shoulders', 'Inhale up, exhale and drop.'],
+            ['Slow shoulder circles', 'Small, easy circles.'],
+            ['Open your chest', 'Gently bring shoulder blades together.'],
+            ['Round your back', 'Softly round your back.'],
+            ['Lightly press temples', 'Press gently, never hard.'],
+            ['Close your eyes', 'Close your eyelids and breathe slowly.']
+          ]
+        },
+        neck: { label: 'Neck/shoulder exhausted', desc: 'Reset neck and shoulders' },
+        neckWaist: { label: 'Neck/shoulder/back exhausted', desc: 'Relax the upper body' },
+        waist: { label: 'Lower back exhausted', desc: 'Slow lower-back care' },
+        sitting: { label: 'Too much sitting', desc: 'Wake up circulation' },
+        foot: { label: 'Legs exhausted', desc: 'Ankles, calves, and thighs' }
+      }
+    };
+
     const screens = {
       home: document.getElementById('homeScreen'),
       menu: document.getElementById('menuScreen'),
@@ -1026,11 +1281,9 @@
       timer: null,
       wakeLock: null,
       lastScreen: 'home',
-      settings: {
-        sound: true,
-        vibe: true,
-        countdown: false
-      }
+      settings: loadSettings(),
+      stars: Number(localStorage.getItem(STORAGE_KEYS.stars) || 0),
+      starClaimedThisRun: false
     };
 
     const menuList = document.getElementById('menuList');
@@ -1042,7 +1295,13 @@
     const routineName = document.getElementById('routineName');
     const stepCount = document.getElementById('stepCount');
     const timeText = document.getElementById('timeText');
+    const currentTimeText = document.getElementById('currentTimeText');
     const totalProgress = document.getElementById('totalProgress');
+    const stepProgress = document.getElementById('stepProgress');
+    const inlineAd = document.getElementById('inlineAd');
+    const claimStarButton = document.getElementById('claimStarButton');
+    const rewardMessage = document.getElementById('rewardMessage');
+    const starCount = document.getElementById('starCount');
     const pictogram = document.getElementById('pictogram');
     const stretchName = document.getElementById('stretchName');
     const stretchGuide = document.getElementById('stretchGuide');
@@ -1064,6 +1323,8 @@
 
     renderMenu();
     applySwitches();
+    applyLanguage();
+    updateStarDisplay();
 
     document.getElementById('goMenuButton').addEventListener('click', () => show('menu'));
     document.getElementById('menuBackButton').addEventListener('click', () => show('home'));
@@ -1075,6 +1336,7 @@
     document.getElementById('stopButton').addEventListener('click', stopRoutine);
     document.getElementById('pauseEndButton').addEventListener('click', stopRoutine);
     document.getElementById('homeButton').addEventListener('click', () => show('home'));
+    claimStarButton.addEventListener('click', claimStar);
 
     document.getElementById('homeSettingsButton').addEventListener('click', () => openSettings('home'));
     document.getElementById('menuSettingsButton').addEventListener('click', () => openSettings('menu'));
@@ -1083,6 +1345,8 @@
     document.getElementById('soundSwitch').addEventListener('click', () => toggleSetting('sound'));
     document.getElementById('vibeSwitch').addEventListener('click', () => toggleSetting('vibe'));
     document.getElementById('countdownSwitch').addEventListener('click', () => toggleSetting('countdown'));
+    document.getElementById('langJaButton').addEventListener('click', () => setLanguage('ja'));
+    document.getElementById('langEnButton').addEventListener('click', () => setLanguage('en'));
 
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && screens.timer.classList.contains('active')) {
@@ -1095,8 +1359,8 @@
         <button class="menu-item" data-menu="${key}">
           <span class="mini-icon">${menu.icon}</span>
           <span>
-            <span class="menu-title">${menu.label}</span>
-            <span class="menu-desc">${menu.desc}</span>
+            <span class="menu-title">${getMenuLabel(key)}</span>
+            <span class="menu-desc">${getMenuDesc(key)}</span>
           </span>
           <span style="color:var(--muted);font-size:22px;">›</span>
         </button>
@@ -1105,7 +1369,7 @@
       menuList.querySelectorAll('.menu-item').forEach(button => {
         button.addEventListener('click', () => {
           state.selectedKey = button.dataset.menu;
-          preAdTitle.textContent = `${menus[state.selectedKey].label}を始めます`;
+          preAdTitle.textContent = state.settings.lang === 'en' ? `Start ${getMenuLabel(state.selectedKey)}` : `${getMenuLabel(state.selectedKey)}を始めます`;
           show('preAd');
         });
       });
@@ -1121,7 +1385,7 @@
 
     function runCountdown() {
       let count = 3;
-      countdownMenuName.textContent = menus[state.selectedKey].label;
+      countdownMenuName.textContent = getMenuLabel(state.selectedKey);
       countdownNum.textContent = count;
       show('countdown');
       beep();
@@ -1141,6 +1405,9 @@
       clearInterval(state.timer);
       state.stepIndex = 0;
       state.stepElapsed = 0;
+      state.starClaimedThisRun = false;
+      rewardMessage.textContent = '';
+      claimStarButton.disabled = false;
       show('timer');
       requestWakeLock();
       loadStep();
@@ -1171,16 +1438,20 @@
       const menu = menus[state.selectedKey];
       const move = moves[state.stepIndex];
 
-      routineName.textContent = menu.label;
+      routineName.textContent = getMenuLabel(state.selectedKey);
       stepCount.textContent = `${state.stepIndex + 1} / ${moves.length}`;
-      stretchName.textContent = move[0];
-      stretchGuide.textContent = move[1];
+      const moveText = getMoveText(state.selectedKey, state.stepIndex, move);
+      stretchName.textContent = moveText[0];
+      stretchGuide.textContent = moveText[1];
 
       pictogram.className = `pictogram ${move[3] || ''}`;
       pictogram.innerHTML = move[2];
 
       const next = moves[state.stepIndex + 1];
-      nextMove.textContent = next ? `次：${next[0]}` : '最後です';
+      const nextText = next ? getMoveText(state.selectedKey, state.stepIndex + 1, next)[0] : '';
+      nextMove.textContent = next ? t('next').replace('{name}', nextText) : t('last');
+      inlineAd.innerHTML = t('finalAd');
+      inlineAd.classList.toggle('show', shouldShowInlineAd(move, state.stepIndex, moves.length));
 
       renderStepBlocks(moves.length);
       updateTimerDisplay();
@@ -1196,8 +1467,15 @@
       const min = String(Math.floor(remaining / 60)).padStart(2, '0');
       const sec = String(remaining % 60).padStart(2, '0');
 
-      timeText.textContent = `${min}:${sec}`;
+      timeText.textContent = state.settings.lang === 'en' ? `Left ${min}:${sec}` : `残り ${min}:${sec}`;
+
+      const currentRemaining = Math.max(0, STEP_SECONDS - state.stepElapsed);
+      const currentMin = String(Math.floor(currentRemaining / 60)).padStart(2, '0');
+      const currentSec = String(currentRemaining % 60).padStart(2, '0');
+      currentTimeText.textContent = `${currentMin}:${currentSec}`;
+
       totalProgress.style.width = `${(elapsed / totalSeconds) * 100}%`;
+      stepProgress.style.width = `${(state.stepElapsed / STEP_SECONDS) * 100}%`;
 
       [...stepBlocks.children].forEach((block, index) => {
         block.classList.toggle('done', index < state.stepIndex);
@@ -1233,6 +1511,7 @@
       releaseWakeLock();
       vibrate([160, 90, 160]);
       beep(true);
+      updateStarDisplay();
       show('complete');
     }
 
@@ -1252,6 +1531,7 @@
 
     function toggleSetting(key) {
       state.settings[key] = !state.settings[key];
+      saveSettings();
       applySwitches();
     }
 
@@ -1259,6 +1539,87 @@
       document.getElementById('soundSwitch').classList.toggle('on', state.settings.sound);
       document.getElementById('vibeSwitch').classList.toggle('on', state.settings.vibe);
       document.getElementById('countdownSwitch').classList.toggle('on', state.settings.countdown);
+      document.getElementById('langJaButton').classList.toggle('active', state.settings.lang === 'ja');
+      document.getElementById('langEnButton').classList.toggle('active', state.settings.lang === 'en');
+    }
+
+    function loadSettings() {
+      const defaults = { sound: true, vibe: true, countdown: false, lang: localStorage.getItem('miniteStretchLang') || browserLang };
+
+      try {
+        return { ...defaults, ...JSON.parse(localStorage.getItem(STORAGE_KEYS.settings) || '{}') };
+      } catch (error) {
+        return defaults;
+      }
+    }
+
+    function saveSettings() {
+      localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(state.settings));
+      localStorage.setItem('miniteStretchLang', state.settings.lang);
+    }
+
+    function setLanguage(lang) {
+      state.settings.lang = lang;
+      saveSettings();
+      applySwitches();
+      applyLanguage();
+      renderMenu();
+
+      if (screens.timer.classList.contains('active')) {
+        loadStep();
+      }
+    }
+
+    function t(key) {
+      return i18n[state.settings.lang]?.[key] || i18n.ja[key] || key;
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = state.settings.lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.dataset.i18n);
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        el.innerHTML = t(el.dataset.i18nHtml);
+      });
+      applySwitches();
+      updateStarDisplay();
+    }
+
+    function getMenuLabel(key) {
+      return menuText[state.settings.lang]?.[key]?.label || menus[key].label;
+    }
+
+    function getMenuDesc(key) {
+      return menuText[state.settings.lang]?.[key]?.desc || menus[key].desc;
+    }
+
+    function getMoveText(key, index, move) {
+      return menuText[state.settings.lang]?.[key]?.moves?.[index] || [move[0], move[1]];
+    }
+
+    function shouldShowInlineAd(move, index, length) {
+      const title = move[0];
+      return index === length - 1 || title.includes('深呼吸') || title.includes('目を閉じる');
+    }
+
+    function updateStarDisplay() {
+      if (!starCount) return;
+      starCount.textContent = t('starNow').replace('{count}', state.stars);
+    }
+
+    function claimStar() {
+      if (state.starClaimedThisRun) {
+        rewardMessage.textContent = t('alreadyClaimed');
+        return;
+      }
+
+      state.stars += 1;
+      state.starClaimedThisRun = true;
+      localStorage.setItem(STORAGE_KEYS.stars, String(state.stars));
+      rewardMessage.textContent = t('claimedStar');
+      claimStarButton.disabled = true;
+      updateStarDisplay();
     }
 
     function vibrate(pattern) {
