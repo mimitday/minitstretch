@@ -215,6 +215,33 @@
       margin: 14px 0;
     }
 
+    .duration-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 0 0 14px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+    }
+
+    .duration-button {
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--sub);
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .duration-button.active {
+      background: linear-gradient(180deg, var(--accent2), var(--accent));
+      color: #16120a;
+    }
+
     .menu-list {
       display: grid;
       gap: 10px;
@@ -715,7 +742,7 @@
         <div class="hero-figure" id="homeIcon"></div>
         <div>
           <h1 data-i18n="appTitle">限界ストレッチ</h1>
-          <div class="lead" data-i18n-html="lead">6分でちょっと楽に。<br />押したら、あとは自動で進みます。</div>
+          <div class="lead" id="leadText" data-i18n-html="lead">3分でちょっと楽に。<br />押したら、あとは自動で進みます。</div>
         </div>
       </div>
 
@@ -726,11 +753,15 @@
     <section id="menuScreen" class="screen">
       <div class="topbar">
         <button class="icon-button" id="menuBackButton" aria-label="戻る">←</button>
-        <div class="brand">6分 / 40秒 × 9</div>
+        <div class="brand" id="durationSummary">3分 / 20秒 × 9</div>
         <button class="icon-button" id="menuSettingsButton" aria-label="設定">⚙</button>
       </div>
 
       <h2 data-i18n="menuHeading">今日はどこが限界？</h2>
+      <div class="duration-toggle" aria-label="時間を選ぶ">
+        <button class="duration-button" id="durationShortButton" type="button" data-duration="short">3分</button>
+        <button class="duration-button" id="durationLongButton" type="button" data-duration="long">6分</button>
+      </div>
       <div class="menu-list" id="menuList"></div>
       <div class="menu-footer" data-i18n="menuFooter">メニュー選択後、開始前に広告が入ります</div>
     </section>
@@ -807,7 +838,7 @@
       <div class="complete-wrap">
         <div class="complete-figure" id="completeIcon"></div>
         <div class="complete-title" data-i18n="completeTitle">おつかれさま！</div>
-        <div class="complete-text" data-i18n-html="completeText">6分できました。<br />今日はここまででOK。</div>
+        <div class="complete-text" id="completeText" data-i18n-html="completeText">3分できました。<br />今日はここまででOK。</div>
         <div class="ad-space">広告スペース<br />AdSenseコードをここに配置</div>
         <div class="reward-box">
           <button class="button" id="claimStarButton" data-i18n="claimStar">★を受け取る</button>
@@ -833,6 +864,14 @@
             <div class="setting-desc" data-i18n="soundDesc">動作切り替え時に小さくポーン</div>
           </div>
           <button class="switch on" id="soundSwitch" aria-label="音ON/OFF"></button>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="setting-title" data-i18n="voiceSetting">ガイド音声</div>
+            <div class="setting-desc" data-i18n="voiceDesc">動作名と短い案内を読み上げます</div>
+          </div>
+          <button class="switch" id="voiceSwitch" aria-label="ガイド音声ON/OFF"></button>
         </div>
 
         <div class="setting-row">
@@ -868,7 +907,10 @@
   </div>
 
   <script>
-    const STEP_SECONDS = 40;
+    const DURATION_MODES = {
+      short: { minutes: 3, stepSeconds: 20 },
+      long: { minutes: 6, stepSeconds: 40 }
+    };
     const STORAGE_KEYS = {
       settings: 'miniteStretchSettings',
       stars: 'miniteStretchStars'
@@ -879,7 +921,7 @@
     const i18n = {
       ja: {
         appTitle: '限界ストレッチ',
-        lead: '6分でちょっと楽に。<br />押したら、あとは自動で進みます。',
+        lead: '3分でちょっと楽に。<br />押したら、あとは自動で進みます。',
         start: 'はじめる',
         medicalNote: '医療行為・治療目的ではありません。痛みがある時は中止してください。',
         menuHeading: '今日はどこが限界？',
@@ -888,13 +930,13 @@
         countdownOffNote: 'カウントダウンOFFなら、この後すぐ開始します。',
         prepare: '準備してください',
         totalRemaining: 'トータル残り時間',
-        currentCount: '現在40秒カウント',
+        currentCount: '現在20秒カウント',
         pause: '一時停止',
         resume: '▶ 再開',
         restart: '最初から',
         end: '終了',
         completeTitle: 'おつかれさま！',
-        completeText: '6分できました。<br />今日はここまででOK。',
+        completeText: '3分できました。<br />今日はここまででOK。',
         claimStar: '★を受け取る',
         claimedStar: '★を1つ受け取りました',
         alreadyClaimed: '受け取り済みです',
@@ -903,6 +945,8 @@
         settings: '設定',
         soundSetting: '音',
         soundDesc: '動作切り替え時に小さくポーン',
+        voiceSetting: 'ガイド音声',
+        voiceDesc: '動作名と短い案内を読み上げます',
         vibeSetting: 'バイブ',
         vibeDesc: '対応端末のみ短く振動',
         countdownSetting: '開始カウントダウン',
@@ -915,7 +959,7 @@
       },
       en: {
         appTitle: 'Limit Stretch',
-        lead: 'Feel a little better in 6 minutes.<br />Press start, then it moves on automatically.',
+        lead: 'Feel a little better in 3 minutes.<br />Press start, then it moves on automatically.',
         start: 'Start',
         medicalNote: 'This is not medical treatment. Stop if you feel pain.',
         menuHeading: 'What is exhausted today?',
@@ -924,13 +968,13 @@
         countdownOffNote: 'If countdown is OFF, it starts right after this.',
         prepare: 'Get ready',
         totalRemaining: 'Total time left',
-        currentCount: 'Current 40-sec count',
+        currentCount: 'Current 20-sec count',
         pause: 'Pause',
         resume: '▶ Resume',
         restart: 'Restart',
         end: 'End',
         completeTitle: 'Good job!',
-        completeText: 'You completed 6 minutes.<br />That is enough for today.',
+        completeText: 'You completed 3 minutes.<br />That is enough for today.',
         claimStar: 'Receive ★',
         claimedStar: 'You received 1 ★',
         alreadyClaimed: 'Already received',
@@ -939,6 +983,8 @@
         settings: 'Settings',
         soundSetting: 'Sound',
         soundDesc: 'Small beep when the move changes',
+        voiceSetting: 'Voice guide',
+        voiceDesc: 'Reads the move and short guide aloud',
         vibeSetting: 'Vibration',
         vibeDesc: 'Short vibration on supported devices',
         countdownSetting: 'Start countdown',
@@ -1255,11 +1301,81 @@
             ['Close your eyes', 'Close your eyelids and breathe slowly.']
           ]
         },
-        neck: { label: 'Neck/shoulder exhausted', desc: 'Reset neck and shoulders' },
-        neckWaist: { label: 'Neck/shoulder/back exhausted', desc: 'Relax the upper body' },
-        waist: { label: 'Lower back exhausted', desc: 'Slow lower-back care' },
-        sitting: { label: 'Too much sitting', desc: 'Wake up circulation' },
-        foot: { label: 'Legs exhausted', desc: 'Ankles, calves, and thighs' }
+        neck: {
+          label: 'Neck/shoulder exhausted',
+          desc: 'Reset neck and shoulders',
+          moves: [
+            ['Slow shoulder circles', 'Make small, easy circles without forcing.'],
+            ['Tilt neck right', 'Release your shoulders and tilt gently to the right.'],
+            ['Tilt neck left', 'Release your shoulders and tilt gently to the left.'],
+            ['Tuck your chin', 'Lengthen the back of your neck softly.'],
+            ['Draw shoulder blades together', 'Gently bring your shoulder blades toward each other.'],
+            ['Open your chest', 'Breathe calmly as you open the front of your chest.'],
+            ['Stretch right arm across chest', 'Loosen the back of your right shoulder.'],
+            ['Stretch left arm across chest', 'Loosen the back of your left shoulder.'],
+            ['Lift and release shoulders', 'Lift your shoulders, then let them drop.']
+          ]
+        },
+        neckWaist: {
+          label: 'Neck/shoulder/back exhausted',
+          desc: 'Relax the upper body',
+          moves: [
+            ['Slow shoulder circles', 'Make small, easy circles without forcing.'],
+            ['Tilt neck right', 'Keep your shoulders down and tilt gently right.'],
+            ['Tilt neck left', 'Keep your shoulders down and tilt gently left.'],
+            ['Open your chest', 'Gently bring your shoulder blades together.'],
+            ['Round your back', 'Release effort and softly round your back.'],
+            ['Twist to the right', 'Twist slowly from your waist upward.'],
+            ['Twist to the left', 'Twist slowly from your waist upward.'],
+            ['Place hands on lower back', 'Lean back only a little, without pain.'],
+            ['Deep breath and release', 'Breathe in, breathe out, and let the effort go.']
+          ]
+        },
+        waist: {
+          label: 'Lower back exhausted',
+          desc: 'Slow lower-back care',
+          moves: [
+            ['Round your back', 'Gently loosen your back from the lower back upward.'],
+            ['Open your chest and lean back', 'Lean back only a little, without pain.'],
+            ['Twist to the right', 'Slowly twist to the right.'],
+            ['Twist to the left', 'Slowly twist to the left.'],
+            ['Stretch right side waist', 'Lean gently to the right.'],
+            ['Stretch left side waist', 'Lean gently to the left.'],
+            ['Rock your pelvis', 'Move your pelvis forward and back in a small range.'],
+            ['Lightly stretch your hips', 'Stretch gently while seated.'],
+            ['Deep breath and release', 'Breathe in, breathe out, and let the effort go.']
+          ]
+        },
+        sitting: {
+          label: 'Too much sitting',
+          desc: 'Wake up circulation',
+          moves: [
+            ['Circle your ankles', 'Circle each ankle slowly.'],
+            ['Raise and lower toes', 'Move your shins gently.'],
+            ['Raise and lower heels', 'Move your calves gently.'],
+            ['Stretch the back of thighs', 'Extend one leg forward and stretch without forcing.'],
+            ['Stretch your calves', 'Feel the stretch through your calves.'],
+            ['Open your hips', 'Let your knees move outward while seated.'],
+            ['Twist to the right', 'Sit tall and twist gently to the right.'],
+            ['Twist to the left', 'Sit tall and twist gently to the left.'],
+            ['Stand and breathe deeply', 'Stand if you can. Sitting is also okay.']
+          ]
+        },
+        foot: {
+          label: 'Legs exhausted',
+          desc: 'Ankles, calves, and thighs',
+          moves: [
+            ['Circle your ankles', 'Circle each ankle slowly.'],
+            ['Raise and lower toes', 'Move your shins gently.'],
+            ['Raise and lower heels', 'Move your calves gently.'],
+            ['Stretch your calves', 'Stretch only as far as comfortable.'],
+            ['Stretch your shins', 'Gently stretch the front of your lower legs.'],
+            ['Stretch front of thighs', 'Stand only if it feels okay.'],
+            ['Stretch back of thighs', 'Extend one leg forward and stretch gently.'],
+            ['Loosen the soles of your feet', 'Place your feet on the floor and move them lightly.'],
+            ['Let your legs relax', 'Let the effort drain out of your legs.']
+          ]
+        }
       }
     };
 
@@ -1296,6 +1412,12 @@
     const stepCount = document.getElementById('stepCount');
     const timeText = document.getElementById('timeText');
     const currentTimeText = document.getElementById('currentTimeText');
+    const currentCountLabel = document.querySelector('[data-i18n="currentCount"]');
+    const durationSummary = document.getElementById('durationSummary');
+    const durationShortButton = document.getElementById('durationShortButton');
+    const durationLongButton = document.getElementById('durationLongButton');
+    const leadText = document.getElementById('leadText');
+    const completeText = document.getElementById('completeText');
     const totalProgress = document.getElementById('totalProgress');
     const stepProgress = document.getElementById('stepProgress');
     const inlineAd = document.getElementById('inlineAd');
@@ -1343,10 +1465,13 @@
     document.getElementById('settingsBackButton').addEventListener('click', () => show(state.lastScreen));
 
     document.getElementById('soundSwitch').addEventListener('click', () => toggleSetting('sound'));
+    document.getElementById('voiceSwitch').addEventListener('click', () => toggleSetting('voice'));
     document.getElementById('vibeSwitch').addEventListener('click', () => toggleSetting('vibe'));
     document.getElementById('countdownSwitch').addEventListener('click', () => toggleSetting('countdown'));
     document.getElementById('langJaButton').addEventListener('click', () => setLanguage('ja'));
     document.getElementById('langEnButton').addEventListener('click', () => setLanguage('en'));
+    durationShortButton.addEventListener('click', () => setDurationMode('short'));
+    durationLongButton.addEventListener('click', () => setDurationMode('long'));
 
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && screens.timer.classList.contains('active')) {
@@ -1417,7 +1542,9 @@
     function tick() {
       state.stepElapsed += 1;
 
-      if (state.stepElapsed >= STEP_SECONDS) {
+      const stepSeconds = getStepSeconds();
+
+      if (state.stepElapsed >= stepSeconds) {
         state.stepIndex += 1;
 
         if (state.stepIndex >= getMoves().length) {
@@ -1443,6 +1570,7 @@
       const moveText = getMoveText(state.selectedKey, state.stepIndex, move);
       stretchName.textContent = moveText[0];
       stretchGuide.textContent = moveText[1];
+      speakGuide(moveText[0], moveText[1]);
 
       pictogram.className = `pictogram ${move[3] || ''}`;
       pictogram.innerHTML = move[2];
@@ -1461,21 +1589,22 @@
 
     function updateTimerDisplay() {
       const moves = getMoves();
-      const totalSeconds = moves.length * STEP_SECONDS;
-      const elapsed = state.stepIndex * STEP_SECONDS + state.stepElapsed;
+      const stepSeconds = getStepSeconds();
+      const totalSeconds = moves.length * stepSeconds;
+      const elapsed = state.stepIndex * stepSeconds + state.stepElapsed;
       const remaining = Math.max(0, totalSeconds - elapsed);
       const min = String(Math.floor(remaining / 60)).padStart(2, '0');
       const sec = String(remaining % 60).padStart(2, '0');
 
       timeText.textContent = state.settings.lang === 'en' ? `Left ${min}:${sec}` : `残り ${min}:${sec}`;
 
-      const currentRemaining = Math.max(0, STEP_SECONDS - state.stepElapsed);
+      const currentRemaining = Math.max(0, stepSeconds - state.stepElapsed);
       const currentMin = String(Math.floor(currentRemaining / 60)).padStart(2, '0');
       const currentSec = String(currentRemaining % 60).padStart(2, '0');
       currentTimeText.textContent = `${currentMin}:${currentSec}`;
 
       totalProgress.style.width = `${(elapsed / totalSeconds) * 100}%`;
-      stepProgress.style.width = `${(state.stepElapsed / STEP_SECONDS) * 100}%`;
+      stepProgress.style.width = `${(state.stepElapsed / stepSeconds) * 100}%`;
 
       [...stepBlocks.children].forEach((block, index) => {
         block.classList.toggle('done', index < state.stepIndex);
@@ -1489,6 +1618,7 @@
 
     function pauseRoutine() {
       clearInterval(state.timer);
+      stopSpeaking();
       show('pause');
       releaseWakeLock();
     }
@@ -1498,16 +1628,19 @@
       requestWakeLock();
       clearInterval(state.timer);
       state.timer = setInterval(tick, 1000);
+      speakCurrentStep();
     }
 
     function stopRoutine() {
       clearInterval(state.timer);
+      stopSpeaking();
       releaseWakeLock();
       show('home');
     }
 
     function finishRoutine() {
       clearInterval(state.timer);
+      stopSpeaking();
       releaseWakeLock();
       vibrate([160, 90, 160]);
       beep(true);
@@ -1517,6 +1650,18 @@
 
     function getMoves() {
       return menus[state.selectedKey].moves;
+    }
+
+    function getDurationMode() {
+      return DURATION_MODES[state.settings.durationMode] ? state.settings.durationMode : 'short';
+    }
+
+    function getDurationConfig() {
+      return DURATION_MODES[getDurationMode()];
+    }
+
+    function getStepSeconds() {
+      return getDurationConfig().stepSeconds;
     }
 
     function show(name) {
@@ -1533,18 +1678,24 @@
       state.settings[key] = !state.settings[key];
       saveSettings();
       applySwitches();
+      if (key === 'voice' && !state.settings.voice) {
+        stopSpeaking();
+      }
     }
 
     function applySwitches() {
       document.getElementById('soundSwitch').classList.toggle('on', state.settings.sound);
+      document.getElementById('voiceSwitch').classList.toggle('on', state.settings.voice);
       document.getElementById('vibeSwitch').classList.toggle('on', state.settings.vibe);
       document.getElementById('countdownSwitch').classList.toggle('on', state.settings.countdown);
       document.getElementById('langJaButton').classList.toggle('active', state.settings.lang === 'ja');
       document.getElementById('langEnButton').classList.toggle('active', state.settings.lang === 'en');
+      durationShortButton.classList.toggle('active', getDurationMode() === 'short');
+      durationLongButton.classList.toggle('active', getDurationMode() === 'long');
     }
 
     function loadSettings() {
-      const defaults = { sound: true, vibe: true, countdown: false, lang: localStorage.getItem('miniteStretchLang') || browserLang };
+      const defaults = { sound: true, voice: false, vibe: true, countdown: false, durationMode: 'short', lang: localStorage.getItem('miniteStretchLang') || browserLang };
 
       try {
         return { ...defaults, ...JSON.parse(localStorage.getItem(STORAGE_KEYS.settings) || '{}') };
@@ -1583,7 +1734,43 @@
         el.innerHTML = t(el.dataset.i18nHtml);
       });
       applySwitches();
+      updateDurationUI();
       updateStarDisplay();
+    }
+
+    function setDurationMode(mode) {
+      if (!DURATION_MODES[mode]) return;
+
+      state.settings.durationMode = mode;
+      saveSettings();
+      updateDurationUI();
+    }
+
+    function updateDurationUI() {
+      const config = getDurationConfig();
+      const moveCount = getMoves().length;
+      const isEn = state.settings.lang === 'en';
+
+      durationShortButton.textContent = isEn ? '3 min' : '3分';
+      durationLongButton.textContent = isEn ? '6 min' : '6分';
+      durationSummary.textContent = isEn
+        ? `${config.minutes} min / ${config.stepSeconds} sec × ${moveCount}`
+        : `${config.minutes}分 / ${config.stepSeconds}秒 × ${moveCount}`;
+      currentCountLabel.textContent = isEn
+        ? `Current ${config.stepSeconds}-sec count`
+        : `現在${config.stepSeconds}秒カウント`;
+      leadText.innerHTML = isEn
+        ? `Feel a little better in ${config.minutes} minutes.<br />Press start, then it moves on automatically.`
+        : `${config.minutes}分でちょっと楽に。<br />押したら、あとは自動で進みます。`;
+      completeText.innerHTML = isEn
+        ? `You completed ${config.minutes} minutes.<br />That is enough for today.`
+        : `${config.minutes}分できました。<br />今日はここまででOK。`;
+
+      applySwitches();
+
+      if (screens.timer.classList.contains('active')) {
+        updateTimerDisplay();
+      }
     }
 
     function getMenuLabel(key) {
@@ -1625,6 +1812,37 @@
     function vibrate(pattern) {
       if (!state.settings.vibe) return;
       if (navigator.vibrate) navigator.vibrate(pattern);
+    }
+
+    function speakGuide(name, guide) {
+      if (!state.settings.voice) return;
+      if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+
+      stopSpeaking();
+
+      const separator = state.settings.lang === 'en' ? '. ' : '。';
+      const utterance = new SpeechSynthesisUtterance(`${name}${separator}${guide}`);
+      utterance.lang = state.settings.lang === 'en' ? 'en-US' : 'ja-JP';
+      utterance.rate = state.settings.lang === 'en' ? 0.9 : 0.95;
+      utterance.pitch = 1;
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakCurrentStep() {
+      if (!state.settings.voice) return;
+
+      const move = getMoves()[state.stepIndex];
+      if (!move) return;
+
+      const moveText = getMoveText(state.selectedKey, state.stepIndex, move);
+      speakGuide(moveText[0], moveText[1]);
+    }
+
+    function stopSpeaking() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
     }
 
     function beep(done = false) {

@@ -1,1316 +1,570 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0f1317" />
-  <title>限界ストレッチ | Minite Stretch</title>
-  <style>
-    :root {
-      --bg: #0f1317;
-      --card: #151a1f;
-      --card2: #1d232a;
-      --line: rgba(255,255,255,.14);
-      --text: #f7f7f5;
-      --sub: #b7bec8;
-      --muted: #7f8995;
-      --accent: #f6c945;
-      --accent2: #ffd95f;
-      --danger: #ff6b6b;
-      --shadow: rgba(0,0,0,.45);
-    }
-
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,.08), transparent 34%),
-        linear-gradient(180deg, #242b33 0%, #11161b 48%, #080b0e 100%);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 14px;
-    }
-
-    button {
-      font-family: inherit;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 430px;
-      min-height: 88vh;
-      background: linear-gradient(180deg, #151a1f 0%, #0b0f12 100%);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 30px;
-      box-shadow: 0 22px 46px var(--shadow);
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .screen {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      animation: fade .22s ease;
-    }
-
-    .screen.active { display: flex; }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      min-height: 40px;
-      margin-bottom: 14px;
-    }
-
-    .brand {
-      color: var(--sub);
-      font-size: 13px;
-      letter-spacing: .06em;
-    }
-
-    .icon-button {
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    h1 {
-      font-size: 34px;
-      line-height: 1.18;
-      margin: 0;
-      font-weight: 900;
-      letter-spacing: -.04em;
-    }
-
-    h2 {
-      font-size: 24px;
-      margin: 0 0 18px;
-      font-weight: 850;
-      text-align: center;
-    }
-
-    .lead {
-      color: var(--sub);
-      line-height: 1.75;
-      margin-top: 12px;
-      font-size: 15px;
-    }
-
-    .hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 22px;
-    }
-
-    .hero-figure {
-      width: 150px;
-      height: 150px;
-      margin: 0 auto 6px;
-      display: grid;
-      place-items: center;
-    }
-
-    .button {
-      border: none;
-      border-radius: 999px;
-      background: linear-gradient(180deg, var(--accent2), var(--accent));
-      color: #16120a;
-      font-size: 17px;
-      font-weight: 900;
-      padding: 17px 18px;
-      cursor: pointer;
-      box-shadow: 0 10px 20px rgba(246,201,69,.18);
-    }
-
-    .sub-button {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: rgba(255,255,255,.045);
-      color: var(--text);
-      padding: 14px;
-      font-size: 15px;
-      font-weight: 750;
-      cursor: pointer;
-    }
-
-    .danger-button {
-      color: #fff;
-      border-color: rgba(255,107,107,.38);
-      background: rgba(255,107,107,.14);
-    }
-
-    .footer-note {
-      margin-top: 16px;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.65;
-      text-align: center;
-    }
-
-    .ad-space {
-      border: 1px dashed rgba(255,255,255,.20);
-      background: rgba(255,255,255,.035);
-      border-radius: 16px;
-      padding: 12px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      min-height: 58px;
-      display: grid;
-      place-items: center;
-      margin: 14px 0;
-    }
-
-    .menu-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .menu-item {
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      border-radius: 16px;
-      padding: 12px 14px;
-      display: grid;
-      grid-template-columns: 42px 1fr 18px;
-      align-items: center;
-      gap: 12px;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    .menu-title {
-      font-size: 16px;
-      font-weight: 850;
-    }
-
-    .menu-desc {
-      color: var(--sub);
-      font-size: 12px;
-      margin-top: 2px;
-    }
-
-    .mini-icon {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      color: var(--text);
-    }
-
-    .mini-icon svg {
-      width: 42px;
-      height: 42px;
-      stroke: currentColor;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-width: 5;
-    }
-
-    .mini-icon .accent-stroke {
-      stroke: var(--accent);
-    }
-
-    .menu-footer {
-      color: var(--sub);
-      text-align: center;
-      font-size: 13px;
-      margin-top: 16px;
-    }
-
-    .timer-top {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 14px;
-      align-items: start;
-      margin-bottom: 14px;
-    }
-
-    .time-wrap {
-      text-align: right;
-    }
-
-    .remain-label {
-      color: var(--sub);
-      font-size: 13px;
-    }
-
-    .time {
-      font-size: 34px;
-      font-weight: 950;
-      letter-spacing: .03em;
-      margin-top: 2px;
-    }
-
-    .step-count {
-      color: var(--sub);
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .routine-name {
-      font-size: 20px;
-      font-weight: 850;
-    }
-
-    .top-progress {
-      height: 5px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.18);
-      overflow: hidden;
-      margin-bottom: 18px;
-    }
-
-    .top-progress > div {
-      height: 100%;
-      width: 0%;
-      background: var(--accent);
-      border-radius: inherit;
-      transition: width .25s linear;
-    }
-
-    .pictogram {
-      width: 100%;
-      height: 270px;
-      border-radius: 26px;
-      background: radial-gradient(circle at center, rgba(255,255,255,.07), rgba(255,255,255,.025) 52%, rgba(255,255,255,.015));
-      border: 1px solid rgba(255,255,255,.06);
-      display: grid;
-      place-items: center;
-      margin-bottom: 18px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .pictogram svg {
-      width: 86%;
-      height: 86%;
-      stroke: #f3f5f4;
-      stroke-width: 7;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,.35));
-    }
-
-    .pictogram .accent-stroke {
-      stroke: var(--accent);
-    }
-
-    .move-neck-right .neck,
-    .move-neck-left .neck {
-      transform-box: fill-box;
-      transform-origin: bottom center;
-      animation: neckTilt 2.4s ease-in-out infinite;
-    }
-
-    .move-neck-left .neck { animation-name: neckTiltLeft; }
-
-    @keyframes neckTilt {
-      0%,100% { transform: rotate(0deg); }
-      50% { transform: rotate(9deg); }
-    }
-
-    @keyframes neckTiltLeft {
-      0%,100% { transform: rotate(0deg); }
-      50% { transform: rotate(-9deg); }
-    }
-
-    .move-shoulder .accent-stroke,
-    .move-ankle .accent-stroke {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: spinHint 2.2s linear infinite;
-    }
-
-    @keyframes spinHint {
-      to { transform: rotate(360deg); }
-    }
-
-    .move-breathe .breath-circle {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: breathe 4s ease-in-out infinite;
-    }
-
-    @keyframes breathe {
-      0%,100% { transform: scale(.93); opacity: .55; }
-      50% { transform: scale(1.05); opacity: 1; }
-    }
-
-    .move-twist .torso,
-    .move-side .torso {
-      transform-box: fill-box;
-      transform-origin: bottom center;
-      animation: gentleTwist 2.6s ease-in-out infinite;
-    }
-
-    @keyframes gentleTwist {
-      0%,100% { transform: rotate(-3deg); }
-      50% { transform: rotate(4deg); }
-    }
-
-    .move-leg .leg-accent {
-      transform-box: fill-box;
-      transform-origin: top center;
-      animation: legMove 2.2s ease-in-out infinite;
-    }
-
-    @keyframes legMove {
-      0%,100% { transform: rotate(-4deg); }
-      50% { transform: rotate(8deg); }
-    }
-
-    .stretch-name {
-      font-size: 26px;
-      font-weight: 900;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .stretch-guide {
-      color: var(--sub);
-      text-align: center;
-      line-height: 1.65;
-      min-height: 48px;
-      padding: 0 12px;
-      font-size: 14px;
-    }
-
-    .step-blocks {
-      display: flex;
-      gap: 5px;
-      justify-content: center;
-      margin: 14px auto 12px;
-      width: min(100%, 230px);
-    }
-
-    .step-block {
-      height: 8px;
-      flex: 1;
-      border-radius: 999px;
-      background: rgba(255,255,255,.16);
-    }
-
-    .step-block.done,
-    .step-block.current {
-      background: var(--accent);
-    }
-
-    .next {
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.06);
-      border-radius: 16px;
-      padding: 12px;
-      color: var(--sub);
-      text-align: center;
-      font-size: 13px;
-    }
-
-    .controls {
-      margin-top: auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .pause-menu {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      gap: 14px;
-      text-align: center;
-    }
-
-    .pause-title {
-      font-size: 26px;
-      font-weight: 900;
-      margin-bottom: 18px;
-    }
-
-    .complete-wrap {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .complete-figure {
-      width: 160px;
-      height: 160px;
-      margin: 0 auto 10px;
-      display: grid;
-      place-items: center;
-    }
-
-    .complete-title {
-      font-size: 30px;
-      font-weight: 950;
-      margin-bottom: 10px;
-    }
-
-    .complete-text {
-      color: var(--sub);
-      line-height: 1.85;
-      font-size: 15px;
-    }
-
-    .setting-list {
-      display: grid;
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .setting-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      gap: 14px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.045);
-      border-radius: 18px;
-      padding: 14px;
-    }
-
-    .setting-title {
-      font-size: 16px;
-      font-weight: 850;
-    }
-
-    .setting-desc {
-      color: var(--sub);
-      font-size: 12px;
-      margin-top: 4px;
-      line-height: 1.5;
-    }
-
-    .switch {
-      width: 54px;
-      height: 30px;
-      border-radius: 999px;
-      border: 0;
-      background: rgba(255,255,255,.20);
-      position: relative;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .switch::after {
-      content: "";
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #fff;
-      position: absolute;
-      left: 3px;
-      top: 3px;
-      transition: transform .2s ease;
-    }
-
-    .switch.on {
-      background: var(--accent);
-    }
-
-    .switch.on::after {
-      transform: translateX(24px);
-    }
-
-    .countdown-wrap {
-      flex: 1;
-      display: grid;
-      place-items: center;
-      text-align: center;
-    }
-
-    .countdown-menu {
-      font-size: 22px;
-      font-weight: 900;
-      margin-bottom: 26px;
-    }
-
-    .countdown-num {
-      width: 160px;
-      height: 160px;
-      margin: 0 auto;
-      border: 8px solid rgba(246,201,69,.25);
-      border-right-color: var(--accent);
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      font-size: 64px;
-      font-weight: 950;
-    }
-
-    .countdown-text {
-      color: var(--sub);
-      margin-top: 24px;
-    }
-
-    @media (max-width: 380px) {
-      body { padding: 8px; }
-      .app { min-height: 94vh; padding: 16px; border-radius: 24px; }
-      h1 { font-size: 30px; }
-      .pictogram { height: 240px; }
-      .stretch-name { font-size: 23px; }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#12161c" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+<title>限界ストレッチ | Minite Stretch</title>
+<style>
+:root{
+  --bg:#111418;
+  --bg2:#181d24;
+  --paper:#20262f;
+  --card:#252c36;
+  --ink:#f4f1ea;
+  --muted:#aeb8c5;
+  --soft:#7f8f9b;
+  --line:rgba(255,255,255,.09);
+  --accent:#9db7c2;
+  --accent2:#d8c7a7;
+  --deep:#0d1014;
+  --shadow:0 24px 60px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(157,183,194,.18), transparent 34%),
+    radial-gradient(circle at 90% 10%, rgba(216,199,167,.10), transparent 30%),
+    var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",Meiryo,"Segoe UI",system-ui,sans-serif;
+  line-height:1.75;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.16;
+  background-image:radial-gradient(rgba(244,241,234,.35) .7px, transparent .7px);
+  background-size:20px 20px;
+}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1120px,calc(100% - 44px));margin:auto}
+.top{
+  min-height:82px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  position:relative;
+  z-index:2;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:900;
+  letter-spacing:.01em;
+}
+.mark{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--accent),#edf4f6);
+  color:#10151b;
+  display:grid;
+  place-items:center;
+  font-weight:950;
+  box-shadow:0 12px 28px rgba(157,183,194,.20);
+}
+.brandText{font-size:23px}
+.nav{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  font-weight:750;
+  font-size:14px;
+  color:#dbe2e8;
+}
+.cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  border-radius:18px;
+  background:var(--accent);
+  color:#0d1014;
+  padding:14px 24px;
+  font-weight:900;
+  box-shadow:0 16px 30px rgba(157,183,194,.18);
+}
+.cta.secondary{
+  background:transparent;
+  color:var(--ink);
+  border:1px solid var(--line);
+  box-shadow:none;
+}
+.hero{
+  display:grid;
+  grid-template-columns:.95fr 1.05fr;
+  gap:52px;
+  align-items:center;
+  padding:70px 0 76px;
+  border-bottom:1px solid var(--line);
+}
+.kicker{
+  color:var(--accent2);
+  font-weight:900;
+  font-size:14px;
+  letter-spacing:.08em;
+  margin-bottom:14px;
+}
+.hero h1{
+  font-size:clamp(42px,5.4vw,72px);
+  line-height:1.16;
+  letter-spacing:-.055em;
+  margin:0 0 20px;
+  font-weight:950;
+}
+.lead{
+  font-size:20px;
+  font-weight:850;
+  margin:0 0 18px;
+}
+.desc{
+  margin:0 0 24px;
+  color:var(--muted);
+}
+.checks{
+  display:grid;
+  gap:9px;
+  margin:0 0 28px;
+  padding:0;
+  list-style:none;
+  font-weight:750;
+}
+.checks li:before{
+  content:"✓";
+  display:inline-grid;
+  place-items:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:rgba(157,183,194,.22);
+  color:#dceff5;
+  font-size:13px;
+  margin-right:10px;
+}
+.heroButtons{display:flex;gap:12px;flex-wrap:wrap}
+.subnote{
+  font-size:12px;
+  color:#88939f;
+  margin-top:12px;
+}
+.mockArea{
+  display:grid;
+  grid-template-columns:1fr .85fr;
+  gap:18px;
+  align-items:center;
+}
+.phone{
+  background:#07090c;
+  border-radius:38px;
+  padding:10px;
+  box-shadow:var(--shadow);
+  aspect-ratio:9/18.5;
+}
+.screen{
+  height:100%;
+  border-radius:30px;
+  background:linear-gradient(180deg,#1b2027,#111418);
+  overflow:hidden;
+  color:var(--ink);
+  position:relative;
+  padding:18px;
+  border:1px solid rgba(255,255,255,.05);
+}
+.status{
+  display:flex;
+  justify-content:space-between;
+  color:#ccd4dc;
+  font-size:10px;
+  font-weight:800;
+  opacity:.8;
+}
+.timerBox{
+  margin-top:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.step{color:var(--muted);font-size:13px;font-weight:800}
+.time{font-size:36px;font-weight:950;letter-spacing:.04em}
+.picto{
+  margin:20px 0;
+  height:212px;
+  border-radius:28px;
+  background:rgba(255,255,255,.04);
+  display:grid;
+  place-items:center;
+}
+.picto svg{
+  width:76%;
+  height:76%;
+  stroke:#edf4f6;
+  stroke-width:9;
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  opacity:.9;
+}
+.moveTitle{
+  text-align:center;
+  font-size:24px;
+  font-weight:900;
+  line-height:1.35;
+}
+.moveText{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-top:8px;
+}
+.next{
+  position:absolute;
+  left:18px;
+  right:18px;
+  bottom:70px;
+  padding:12px;
+  border-radius:16px;
+  background:rgba(255,255,255,.04);
+  color:#aeb8c5;
+  text-align:center;
+  font-size:12px;
+}
+.appBtn{
+  position:absolute;
+  left:18px;
+  right:18px;
+  bottom:18px;
+  border-radius:16px;
+  padding:14px;
+  background:var(--accent);
+  color:#0d1014;
+  text-align:center;
+  font-weight:900;
+}
+.sideCards{
+  display:grid;
+  gap:16px;
+}
+.miniCard{
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:22px;
+}
+.miniCard b{
+  display:block;
+  font-size:18px;
+  margin-bottom:8px;
+}
+.miniCard p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+}
+.adDemo{
+  border:1px dashed rgba(255,255,255,.16);
+  color:#82909d;
+  border-radius:18px;
+  padding:18px;
+  text-align:center;
+  font-size:12px;
+  background:rgba(255,255,255,.02);
+}
+.section{
+  padding:58px 0;
+  border-bottom:1px solid var(--line);
+}
+.sectionTitle{
+  text-align:center;
+  font-size:32px;
+  letter-spacing:-.035em;
+  margin:0 0 34px;
+}
+.featureGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+}
+.feature{
+  padding:0 24px;
+  text-align:center;
+  border-right:1px solid var(--line);
+}
+.feature:last-child{border-right:0}
+.icon{
+  font-size:42px;
+  line-height:1;
+  margin-bottom:16px;
+}
+.feature h3,.howItem h3{
+  font-size:17px;
+  margin:0 0 8px;
+}
+.feature p,.howItem p{
+  color:var(--muted);
+  font-size:14px;
+  margin:0;
+}
+.howGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:26px;
+}
+.howItem{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:26px;
+}
+.num{
+  display:inline-grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:rgba(157,183,194,.22);
+  color:#edf4f6;
+  font-weight:950;
+  margin-right:10px;
+}
+.banner{
+  margin:50px auto;
+  background:linear-gradient(135deg,rgba(157,183,194,.13),rgba(216,199,167,.08));
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:32px 42px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:26px;
+  align-items:center;
+}
+.moonBadge{
+  width:72px;
+  height:72px;
+  border-radius:24px;
+  background:rgba(255,255,255,.07);
+  display:grid;
+  place-items:center;
+  font-size:34px;
+}
+.banner h2{margin:0;font-size:30px;letter-spacing:-.03em}
+.banner p{margin:4px 0 0;color:var(--muted)}
+.adWrap{
+  padding:0 0 28px;
+}
+.adSpace{
+  border:1px dashed rgba(255,255,255,.14);
+  border-radius:18px;
+  padding:18px;
+  text-align:center;
+  color:#7e8994;
+  font-size:12px;
+}
+.foot{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  padding:0 0 34px;
+  font-size:13px;
+  color:#98a3af;
+}
+.links{display:flex;gap:24px;flex-wrap:wrap}
+@media(max-width:900px){
+  .wrap{width:min(100% - 28px,680px)}
+  .top{height:auto;padding:18px 0;align-items:flex-start}
+  .nav{gap:12px;font-size:12px;flex-wrap:wrap;justify-content:flex-end}
+  .hero{grid-template-columns:1fr;padding:42px 0 54px}
+  .mockArea{grid-template-columns:1fr;max-width:390px;margin:auto}
+  .sideCards{grid-template-columns:1fr}
+  .featureGrid,.howGrid,.banner{grid-template-columns:1fr}
+  .feature{border-right:0;border-bottom:1px solid var(--line);padding:26px 12px}
+  .feature:last-child{border-bottom:0}
+  .banner{padding:26px}
+  .foot{display:block}
+  .links{margin-bottom:12px}
+  .brandText{font-size:20px}
+  .nav a:not(.cta){display:none}
+}
+</style>
 </head>
 <body>
-  <div class="app">
-    <section id="homeScreen" class="screen active">
-      <div class="topbar">
-        <div class="brand">Minite Stretch</div>
-        <button class="icon-button" id="homeSettingsButton" aria-label="設定">⚙</button>
+<header class="top wrap">
+  <a class="brand" href="index.html" aria-label="限界ストレッチ トップ">
+    <span class="mark">M</span>
+    <span class="brandText">Minite Stretch</span>
+  </a>
+  <nav class="nav">
+    <a href="#features">特徴</a>
+    <a href="#how">使い方</a>
+    <a href="#safety">安心設計</a>
+    <a class="cta" href="app.html">3分だけ試す</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div>
+      <div class="kicker">限界ストレッチ by Minite</div>
+      <h1>頭も体も限界な日に、<br>3分だけ戻す。</h1>
+      <p class="lead">首・肩・腰が終わった人向けの、低刺激ストレッチタイマー。</p>
+      <p class="desc">
+        長時間の作業後、もう文章を読む気力もない時に。<br>
+        大きなピクトグラムと20秒タイマーで、迷わず体をゆるめます。6分モードも選べます。
+      </p>
+      <ul class="checks">
+        <li>スマホでそのまま使えるPWA想定</li>
+        <li>タイマー中に広告を出さない設計</li>
+        <li>運動アプリではなく、限界時のリセット導線</li>
+      </ul>
+      <div class="heroButtons">
+        <a class="cta" href="app.html">3分だけ始める</a>
+        <a class="cta secondary" href="#features">どんなアプリ？</a>
       </div>
+      <div class="subnote">インストール不要。GitHub Pagesで公開できます。</div>
+    </div>
 
-      <div class="hero">
-        <div class="hero-figure" id="homeIcon"></div>
-        <div>
-          <h1>限界ストレッチ</h1>
-          <div class="lead">6分でちょっと楽に。<br />押したら、あとは自動で進みます。</div>
-        </div>
-      </div>
-
-      <button class="button" id="goMenuButton">はじめる</button>
-      <div class="footer-note">医療行為・治療目的ではありません。痛みがある時は中止してください。</div>
-    </section>
-
-    <section id="menuScreen" class="screen">
-      <div class="topbar">
-        <button class="icon-button" id="menuBackButton" aria-label="戻る">←</button>
-        <div class="brand">6分 / 40秒 × 9</div>
-        <button class="icon-button" id="menuSettingsButton" aria-label="設定">⚙</button>
-      </div>
-
-      <h2>今日はどこが限界？</h2>
-      <div class="menu-list" id="menuList"></div>
-      <div class="menu-footer">メニュー選択後、開始前に広告が入ります</div>
-    </section>
-
-    <section id="preAdScreen" class="screen">
-      <div class="topbar">
-        <button class="icon-button" id="preAdBackButton" aria-label="戻る">←</button>
-        <div class="brand">開始前</div>
-        <div></div>
-      </div>
-
-      <div class="hero">
-        <h2 id="preAdTitle">開始前広告</h2>
-        <div class="ad-space">広告スペース<br />AdSenseコードをここに配置</div>
-        <button class="button" id="startSelectedButton">ストレッチ開始</button>
-        <div class="footer-note">カウントダウンOFFなら、この後すぐ開始します。</div>
-      </div>
-    </section>
-
-    <section id="countdownScreen" class="screen">
-      <div class="countdown-wrap">
-        <div>
-          <div class="countdown-menu" id="countdownMenuName">首肩限界</div>
-          <div class="countdown-num" id="countdownNum">3</div>
-          <div class="countdown-text">準備してください</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="timerScreen" class="screen">
-      <div class="timer-top">
-        <div>
-          <div class="step-count" id="stepCount">1 / 9</div>
-          <div class="routine-name" id="routineName">首肩限界</div>
-        </div>
-        <div class="time-wrap">
-          <div class="remain-label">残り</div>
-          <div class="time" id="timeText">06:00</div>
-        </div>
-      </div>
-
-      <div class="top-progress"><div id="totalProgress"></div></div>
-
-      <div class="pictogram" id="pictogram"></div>
-      <div class="stretch-name" id="stretchName"></div>
-      <div class="stretch-guide" id="stretchGuide"></div>
-      <div class="step-blocks" id="stepBlocks"></div>
-      <div class="next" id="nextMove"></div>
-
-      <div class="controls">
-        <button class="sub-button" id="pauseButton">一時停止</button>
-        <button class="sub-button danger-button" id="stopButton">終了</button>
-      </div>
-    </section>
-
-    <section id="pauseScreen" class="screen">
-      <div class="pause-menu">
-        <div class="pause-title">一時停止</div>
-        <button class="button" id="resumeButton">▶ 再開</button>
-        <button class="sub-button" id="restartRoutineButton">最初から</button>
-        <button class="sub-button danger-button" id="pauseEndButton">終了</button>
-      </div>
-    </section>
-
-    <section id="completeScreen" class="screen">
-      <div class="complete-wrap">
-        <div class="complete-figure" id="completeIcon"></div>
-        <div class="complete-title">おつかれさま！</div>
-        <div class="complete-text">6分できました。<br />今日はここまででOK。</div>
-        <div class="ad-space">広告スペース<br />AdSenseコードをここに配置</div>
-        <button class="button" id="homeButton">ホームへ戻る</button>
-      </div>
-    </section>
-
-    <section id="settingsScreen" class="screen">
-      <div class="topbar">
-        <button class="icon-button" id="settingsBackButton" aria-label="戻る">←</button>
-        <div class="brand">設定</div>
-        <div></div>
-      </div>
-
-      <h2>設定</h2>
-      <div class="setting-list">
-        <div class="setting-row">
-          <div>
-            <div class="setting-title">音</div>
-            <div class="setting-desc">動作切り替え時に小さくポーン</div>
+    <div class="mockArea" aria-label="限界ストレッチのアプリ画面イメージ">
+      <div class="phone">
+        <div class="screen">
+          <div class="status"><span>21:48</span><span>Minite</span></div>
+          <div class="timerBox">
+            <div class="step">3 / 9</div>
+            <div class="time">00:18</div>
           </div>
-          <button class="switch on" id="soundSwitch" aria-label="音ON/OFF"></button>
-        </div>
-
-        <div class="setting-row">
-          <div>
-            <div class="setting-title">バイブ</div>
-            <div class="setting-desc">対応端末のみ短く振動</div>
+          <div class="picto">
+            <svg viewBox="0 0 240 240" aria-hidden="true">
+              <circle cx="120" cy="50" r="24" />
+              <path d="M120 75 L120 145" />
+              <path d="M70 115 Q120 75 170 115" />
+              <path d="M90 105 L90 75" />
+              <path d="M150 105 L150 75" />
+              <path d="M120 145 L95 205" />
+              <path d="M120 145 L145 205" />
+            </svg>
           </div>
-          <button class="switch on" id="vibeSwitch" aria-label="バイブON/OFF"></button>
-        </div>
-
-        <div class="setting-row">
-          <div>
-            <div class="setting-title">開始カウントダウン</div>
-            <div class="setting-desc">OFFなら広告後すぐ開始</div>
-          </div>
-          <button class="switch" id="countdownSwitch" aria-label="開始カウントダウンON/OFF"></button>
+          <div class="moveTitle">肩を上げて<br>下ろす</div>
+          <div class="moveText">吸って上げて、吐きながら落とします。</div>
+          <div class="next">次：背中を丸める</div>
+          <div class="appBtn">一時停止</div>
         </div>
       </div>
 
-      <div class="footer-note">version 0.2.0</div>
-    </section>
+      <div class="sideCards">
+        <div class="miniCard">
+          <b>読む気力がなくてもOK</b>
+          <p>文章よりピクトグラム優先。見た瞬間に真似できるUIを目指します。</p>
+        </div>
+        <div class="miniCard">
+          <b>今日はここまででOK</b>
+          <p>継続圧や達成率で追い込まず、小さく終われる完了画面に。</p>
+        </div>
+        <div class="adDemo">広告スペース<br>トップ・説明・完了画面のみ</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section wrap">
+    <h2 class="sectionTitle">限界時に使えるように</h2>
+    <div class="featureGrid">
+      <div class="feature">
+        <div class="icon">🪑</div>
+        <h3>首肩腰に集中</h3>
+        <p>長時間座った後の重さに合わせた、やさしい8ステップ。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">👁️</div>
+        <h3>低刺激UI</h3>
+        <p>夜でも見やすい暗めの配色。派手な演出は入れません。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🔇</div>
+        <h3>音なしでも成立</h3>
+        <p>音声ガイドは補助。画面だけで使える設計です。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🌙</div>
+        <h3>終わる許可</h3>
+        <p>「もっと頑張ろう」ではなく「今日はここまででOK」で終わります。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="section wrap">
+    <h2 class="sectionTitle">使い方は3つだけ</h2>
+    <div class="howGrid">
+      <div class="howItem">
+        <h3><span class="num">1</span>モードを選ぶ</h3>
+        <p>まずは「首肩腰リセット」から。今後、寝る前・朝向けも追加できます。</p>
+      </div>
+      <div class="howItem">
+        <h3><span class="num">2</span>20秒ずつ真似する</h3>
+        <p>大きなピクトグラムを見ながら、8ステップだけ進みます。</p>
+      </div>
+      <div class="howItem">
+        <h3><span class="num">3</span>終わったら閉じる</h3>
+        <p>記録や連続日数で急かさず、体を少し戻して終了です。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="safety" class="section wrap">
+    <h2 class="sectionTitle">安心して使うために</h2>
+    <div class="howGrid">
+      <div class="howItem">
+        <h3>医療目的ではありません</h3>
+        <p>本アプリは作業後のリフレッシュを目的としたストレッチガイドです。</p>
+      </div>
+      <div class="howItem">
+        <h3>痛い動きはしない</h3>
+        <p>反動をつける動きや、首を強く回す動きは避けた構成にします。</p>
+      </div>
+      <div class="howItem">
+        <h3>無理なら止める</h3>
+        <p>痛みや違和感がある場合は、使用を中止してください。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="banner wrap">
+    <div class="moonBadge">🌙</div>
+    <div>
+      <h2>一旦、体だけ戻そう。</h2>
+      <p>限界の日でも、自分を雑に扱わないための小さな回復導線。</p>
+    </div>
+    <div>
+      <a class="cta" href="app.html">3分だけ試す</a>
+      <div class="subnote">タイマー中に広告は表示しません。</div>
+    </div>
+  </section>
+
+  <section class="adWrap wrap" aria-label="広告エリア">
+    <div class="adSpace">
+      AdSense広告スペース予定<br>
+      ※トップ・説明・完了画面のみ。タイマー中は非表示。
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <div class="links">
+    <a href="privacy.html">プライバシーポリシー</a>
+    <a href="terms.html">利用規約</a>
+    <a href="https://forms.gle/qpzK8fobsCCJGdVa9" target="_blank" rel="noopener">お問い合わせ</a>
   </div>
-
-  <script>
-    const STEP_SECONDS = 40;
-
-    const icons = {
-      home: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="112" cy="60" r="22"></circle>
-        <path d="M112 84 L103 143"></path>
-        <path d="M106 102 Q78 115 75 145"></path>
-        <path d="M107 101 Q136 93 151 66"></path>
-        <path d="M103 143 L82 205"></path>
-        <path d="M103 143 L128 205"></path>
-        <path class="accent-stroke" d="M162 48 L174 33"></path>
-        <path class="accent-stroke" d="M170 68 L190 61"></path>
-        <path class="accent-stroke" d="M162 86 L177 101"></path>
-      </svg>`,
-
-      head: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="120" cy="72" r="22"></circle>
-        <path d="M120 96 L120 154"></path>
-        <path d="M95 123 Q120 102 145 123"></path>
-        <path d="M120 154 L95 206"></path>
-        <path d="M120 154 L145 206"></path>
-        <path d="M92 72 Q80 90 92 106"></path>
-        <path d="M148 72 Q160 90 148 106"></path>
-        <path class="accent-stroke" d="M84 62 L70 51"></path>
-        <path class="accent-stroke" d="M156 62 L170 51"></path>
-      </svg>`,
-
-      neck: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <g class="neck">
-          <circle cx="120" cy="62" r="23"></circle>
-          <path d="M120 86 L120 112"></path>
-        </g>
-        <path d="M120 112 L120 154"></path>
-        <path d="M88 119 Q120 100 152 119"></path>
-        <path d="M120 154 L94 206"></path>
-        <path d="M120 154 L146 206"></path>
-        <path class="accent-stroke" d="M160 60 Q181 77 166 98"></path>
-      </svg>`,
-
-      shoulderWaist: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="120" cy="54" r="22"></circle>
-        <path d="M120 78 L120 151"></path>
-        <path d="M88 112 Q120 95 152 112"></path>
-        <path d="M92 116 L78 151"></path>
-        <path d="M148 116 L162 151"></path>
-        <path d="M120 151 L95 207"></path>
-        <path d="M120 151 L145 207"></path>
-        <path class="accent-stroke" d="M82 98 Q70 80 88 68"></path>
-        <path class="accent-stroke" d="M158 98 Q170 80 152 68"></path>
-      </svg>`,
-
-      waist: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="120" cy="54" r="22"></circle>
-        <g class="torso">
-          <path d="M120 78 L120 151"></path>
-          <path d="M91 115 Q120 94 149 115"></path>
-          <path d="M90 116 L76 156"></path>
-          <path d="M150 116 L164 156"></path>
-        </g>
-        <path d="M120 151 L94 207"></path>
-        <path d="M120 151 L146 207"></path>
-        <path class="accent-stroke" d="M151 150 Q177 166 156 186"></path>
-      </svg>`,
-
-      sitting: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="118" cy="48" r="20"></circle>
-        <path d="M118 70 L118 126"></path>
-        <path d="M118 92 L86 113"></path>
-        <path d="M118 126 L76 126"></path>
-        <path d="M76 126 L76 178"></path>
-        <path d="M118 126 L158 152"></path>
-        <path d="M158 152 L196 152"></path>
-        <path d="M64 179 L142 179"></path>
-        <path class="accent-stroke" d="M170 152 L184 178"></path>
-      </svg>`,
-
-      foot: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="120" cy="54" r="22"></circle>
-        <path d="M120 78 L120 146"></path>
-        <path d="M92 112 Q120 96 148 112"></path>
-        <path d="M120 146 L94 206"></path>
-        <path class="leg-accent" d="M120 146 L152 196"></path>
-        <path class="leg-accent" d="M152 196 L190 196"></path>
-        <path class="accent-stroke" d="M168 183 Q184 169 198 184"></path>
-      </svg>`,
-
-      breathe: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle class="breath-circle accent-stroke" cx="120" cy="105" r="50"></circle>
-        <circle cx="120" cy="60" r="22"></circle>
-        <path d="M120 84 L120 151"></path>
-        <path d="M90 114 Q120 98 150 114"></path>
-        <path d="M120 151 L94 207"></path>
-        <path d="M120 151 L146 207"></path>
-      </svg>`,
-
-      shoulder: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="120" cy="54" r="22"></circle>
-        <path d="M120 78 L120 150"></path>
-        <path d="M88 112 Q120 96 152 112"></path>
-        <path d="M90 116 L78 152"></path>
-        <path d="M150 116 L162 152"></path>
-        <path d="M120 150 L94 207"></path>
-        <path d="M120 150 L146 207"></path>
-        <path class="accent-stroke" d="M78 90 Q62 112 80 132"></path>
-        <path class="accent-stroke" d="M162 90 Q178 112 160 132"></path>
-      </svg>`,
-
-      chest: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="120" cy="52" r="22"></circle>
-        <path d="M120 76 L120 150"></path>
-        <path d="M120 108 L66 88"></path>
-        <path d="M120 108 L174 88"></path>
-        <path d="M120 150 L94 207"></path>
-        <path d="M120 150 L146 207"></path>
-        <path class="accent-stroke" d="M66 88 L52 68"></path>
-        <path class="accent-stroke" d="M174 88 L188 68"></path>
-      </svg>`,
-
-      back: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="119" cy="54" r="22"></circle>
-        <path d="M119 78 Q91 111 106 151"></path>
-        <path d="M95 114 L67 139"></path>
-        <path d="M111 151 L93 207"></path>
-        <path d="M111 151 L148 207"></path>
-        <path class="accent-stroke" d="M96 90 Q72 120 88 153"></path>
-      </svg>`,
-
-      twist: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="120" cy="54" r="22"></circle>
-        <g class="torso">
-          <path d="M120 78 L120 150"></path>
-          <path d="M92 113 Q120 94 148 113"></path>
-          <path d="M92 113 L72 148"></path>
-          <path d="M148 113 L172 143"></path>
-        </g>
-        <path d="M120 150 L94 207"></path>
-        <path d="M120 150 L146 207"></path>
-        <path class="accent-stroke" d="M76 174 Q120 200 164 174"></path>
-      </svg>`,
-
-      fold: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="135" cy="56" r="21"></circle>
-        <path d="M132 78 Q111 112 113 150"></path>
-        <path d="M113 150 L90 207"></path>
-        <path d="M113 150 L146 207"></path>
-        <path d="M112 122 Q159 132 180 162"></path>
-        <path class="accent-stroke" d="M155 82 Q175 102 164 124"></path>
-      </svg>`,
-
-      ankle: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="119" cy="50" r="21"></circle>
-        <path d="M119 73 L119 129"></path>
-        <path d="M119 93 L88 112"></path>
-        <path d="M119 128 L78 128"></path>
-        <path d="M78 128 L78 176"></path>
-        <path d="M119 128 L156 153"></path>
-        <path d="M156 153 L192 153"></path>
-        <path d="M65 177 L143 177"></path>
-        <path class="accent-stroke" d="M186 142 Q205 153 190 170"></path>
-      </svg>`,
-
-      side: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="120" cy="55" r="22"></circle>
-        <g class="torso">
-          <path d="M120 79 L111 151"></path>
-          <path d="M111 107 L78 132"></path>
-          <path d="M111 107 L150 84"></path>
-        </g>
-        <path d="M111 151 L88 207"></path>
-        <path d="M111 151 L139 207"></path>
-        <path class="accent-stroke" d="M160 73 Q183 98 158 124"></path>
-      </svg>`,
-
-      leg: `<svg viewBox="0 0 240 240" aria-hidden="true">
-        <circle cx="118" cy="48" r="20"></circle>
-        <path d="M118 70 L118 126"></path>
-        <path d="M118 92 L86 113"></path>
-        <path d="M118 126 L76 126"></path>
-        <path d="M76 126 L76 178"></path>
-        <path d="M118 126 L158 152"></path>
-        <path class="leg-accent" d="M158 152 L196 152"></path>
-        <path class="accent-stroke" d="M172 152 L192 135"></path>
-      </svg>`
-    };
-
-    const menus = {
-      head: {
-        label: '頭限界',
-        desc: '目・頭・首をゆるめる',
-        icon: icons.head,
-        moves: [
-          ['目を閉じて深呼吸', 'まぶたを閉じて、ゆっくり吸って吐きます。', icons.breathe, 'move-breathe'],
-          ['こめかみを軽く押す', '痛くない強さで、ふわっと押します。', icons.head, 'move-breathe'],
-          ['首を右に倒す', '肩を下げたまま、ゆっくり右へ。', icons.neck, 'move-neck-right'],
-          ['首を左に倒す', '反動をつけず、ゆっくり左へ。', icons.neck, 'move-neck-left'],
-          ['あごを引く', '首の後ろを長くするイメージ。', icons.back, 'move-side'],
-          ['肩をすくめて下ろす', '吸って上げて、吐いてストン。', icons.shoulder, 'move-shoulder'],
-          ['胸を開く', '肩甲骨を軽く寄せます。', icons.chest, 'move-side'],
-          ['背中を丸める', '背中をふわっと丸めます。', icons.back, 'move-side'],
-          ['目を遠くに向ける', '画面から目を離して、遠くを見ます。', icons.breathe, 'move-breathe']
-        ]
-      },
-      neck: {
-        label: '首肩限界',
-        desc: '首と肩を中心にリセット',
-        icon: icons.neck,
-        moves: [
-          ['肩をゆっくり回す', '小さく、無理なく回します。', icons.shoulder, 'move-shoulder'],
-          ['首を右に倒す', '肩の力を抜いて右へ。', icons.neck, 'move-neck-right'],
-          ['首を左に倒す', '肩の力を抜いて左へ。', icons.neck, 'move-neck-left'],
-          ['あごを引く', '首の後ろを伸ばします。', icons.back, 'move-side'],
-          ['肩甲骨を寄せる', '背中側で軽く寄せます。', icons.chest, 'move-side'],
-          ['胸を開く', '呼吸しながら胸を開きます。', icons.chest, 'move-side'],
-          ['右腕を胸の前で伸ばす', '右肩の後ろをゆるめます。', icons.shoulderWaist, 'move-side'],
-          ['左腕を胸の前で伸ばす', '左肩の後ろをゆるめます。', icons.shoulderWaist, 'move-side'],
-          ['肩をすくめて脱力', '最後にストンと力を抜きます。', icons.shoulder, 'move-shoulder']
-        ]
-      },
-      neckWaist: {
-        label: '首肩腰限界',
-        desc: '上半身まとめてゆるめる',
-        icon: icons.shoulderWaist,
-        moves: [
-          ['肩をゆっくり回す', '小さく、無理なく回します。', icons.shoulder, 'move-shoulder'],
-          ['首を右に倒す', '肩を下げたまま右へ。', icons.neck, 'move-neck-right'],
-          ['首を左に倒す', '肩を下げたまま左へ。', icons.neck, 'move-neck-left'],
-          ['胸を開く', '肩甲骨を軽く寄せます。', icons.chest, 'move-side'],
-          ['背中を丸める', '力を抜いて丸まります。', icons.back, 'move-side'],
-          ['体を右にひねる', '腰から上をゆっくり右へ。', icons.twist, 'move-twist'],
-          ['体を左にひねる', '腰から上をゆっくり左へ。', icons.twist, 'move-twist'],
-          ['腰に手を当てて反る', '痛くない範囲で少しだけ。', icons.waist, 'move-side'],
-          ['深呼吸して脱力', '吸って、吐いて、力を抜きます。', icons.breathe, 'move-breathe']
-        ]
-      },
-      waist: {
-        label: '腰限界',
-        desc: '腰まわりをゆっくり',
-        icon: icons.waist,
-        moves: [
-          ['背中を丸める', '腰から背中をゆるめます。', icons.back, 'move-side'],
-          ['胸を開いて反る', '痛くない範囲で少しだけ。', icons.chest, 'move-side'],
-          ['体を右にひねる', 'ゆっくり右へひねります。', icons.twist, 'move-twist'],
-          ['体を左にひねる', 'ゆっくり左へひねります。', icons.twist, 'move-twist'],
-          ['右の腰を横に伸ばす', '体を右へゆっくり倒します。', icons.side, 'move-side'],
-          ['左の腰を横に伸ばす', '体を左へゆっくり倒します。', icons.side, 'move-side'],
-          ['骨盤を前後にゆらす', '小さく前後にゆらします。', icons.waist, 'move-twist'],
-          ['お尻を軽く伸ばす', '座ったまま無理なく伸ばします。', icons.sitting, 'move-leg'],
-          ['深呼吸して脱力', '吸って、吐いて、力を抜きます。', icons.breathe, 'move-breathe']
-        ]
-      },
-      sitting: {
-        label: '座りすぎ',
-        desc: '座りっぱなしの循環戻し',
-        icon: icons.sitting,
-        moves: [
-          ['足首を回す', '片足ずつ、ゆっくり回します。', icons.ankle, 'move-ankle'],
-          ['つま先を上げ下げ', 'すねを軽く動かします。', icons.leg, 'move-leg'],
-          ['かかとを上げ下げ', 'ふくらはぎを軽く動かします。', icons.leg, 'move-leg'],
-          ['太もも裏を伸ばす', '片足を前に出して伸ばします。', icons.leg, 'move-leg'],
-          ['ふくらはぎを伸ばす', 'かかとを意識して伸ばします。', icons.foot, 'move-leg'],
-          ['股関節を開く', '座ったまま膝を外へ。', icons.sitting, 'move-leg'],
-          ['体を右にひねる', '背中を起こして右へ。', icons.twist, 'move-twist'],
-          ['体を左にひねる', '背中を起こして左へ。', icons.twist, 'move-twist'],
-          ['立って深呼吸', '立てる時だけでOK。無理なら座ったまま。', icons.breathe, 'move-breathe']
-        ]
-      },
-      foot: {
-        label: '足限界',
-        desc: '足首・ふくらはぎ・太もも',
-        icon: icons.foot,
-        moves: [
-          ['足首を回す', '片足ずつ、ゆっくり回します。', icons.ankle, 'move-ankle'],
-          ['つま先を上げ下げ', 'すねを軽く動かします。', icons.leg, 'move-leg'],
-          ['かかとを上げ下げ', 'ふくらはぎを軽く動かします。', icons.leg, 'move-leg'],
-          ['ふくらはぎを伸ばす', '痛くない範囲で伸ばします。', icons.foot, 'move-leg'],
-          ['すねを伸ばす', '足の甲側を軽く伸ばします。', icons.foot, 'move-leg'],
-          ['太もも前を伸ばす', '立てる時だけでOK。', icons.foot, 'move-leg'],
-          ['太もも裏を伸ばす', '片足を前に出して伸ばします。', icons.leg, 'move-leg'],
-          ['足裏をほぐす', '床に足裏をつけて軽く動かします。', icons.ankle, 'move-ankle'],
-          ['足をぶらぶら', '最後に力を抜いてぶらぶら。', icons.foot, 'move-leg']
-        ]
-      }
-    };
-
-    const screens = {
-      home: document.getElementById('homeScreen'),
-      menu: document.getElementById('menuScreen'),
-      preAd: document.getElementById('preAdScreen'),
-      countdown: document.getElementById('countdownScreen'),
-      timer: document.getElementById('timerScreen'),
-      pause: document.getElementById('pauseScreen'),
-      complete: document.getElementById('completeScreen'),
-      settings: document.getElementById('settingsScreen')
-    };
-
-    const state = {
-      selectedKey: 'neck',
-      stepIndex: 0,
-      stepElapsed: 0,
-      timer: null,
-      wakeLock: null,
-      lastScreen: 'home',
-      settings: {
-        sound: true,
-        vibe: true,
-        countdown: false
-      }
-    };
-
-    const menuList = document.getElementById('menuList');
-    const homeIcon = document.getElementById('homeIcon');
-    const completeIcon = document.getElementById('completeIcon');
-    const preAdTitle = document.getElementById('preAdTitle');
-    const countdownMenuName = document.getElementById('countdownMenuName');
-    const countdownNum = document.getElementById('countdownNum');
-    const routineName = document.getElementById('routineName');
-    const stepCount = document.getElementById('stepCount');
-    const timeText = document.getElementById('timeText');
-    const totalProgress = document.getElementById('totalProgress');
-    const pictogram = document.getElementById('pictogram');
-    const stretchName = document.getElementById('stretchName');
-    const stretchGuide = document.getElementById('stretchGuide');
-    const stepBlocks = document.getElementById('stepBlocks');
-    const nextMove = document.getElementById('nextMove');
-
-    homeIcon.innerHTML = icons.home;
-    completeIcon.innerHTML = `<svg viewBox="0 0 240 240" aria-hidden="true">
-      <circle cx="120" cy="70" r="22"></circle>
-      <path d="M120 94 L120 151"></path>
-      <path d="M120 112 L74 56"></path>
-      <path d="M120 112 L166 56"></path>
-      <path d="M120 151 L94 207"></path>
-      <path d="M120 151 L146 207"></path>
-      <path class="accent-stroke" d="M63 78 L49 66"></path>
-      <path class="accent-stroke" d="M177 78 L191 66"></path>
-      <path class="accent-stroke" d="M120 38 L120 20"></path>
-    </svg>`;
-
-    renderMenu();
-    applySwitches();
-
-    document.getElementById('goMenuButton').addEventListener('click', () => show('menu'));
-    document.getElementById('menuBackButton').addEventListener('click', () => show('home'));
-    document.getElementById('preAdBackButton').addEventListener('click', () => show('menu'));
-    document.getElementById('startSelectedButton').addEventListener('click', startSelected);
-    document.getElementById('pauseButton').addEventListener('click', pauseRoutine);
-    document.getElementById('resumeButton').addEventListener('click', resumeRoutine);
-    document.getElementById('restartRoutineButton').addEventListener('click', () => startRoutine());
-    document.getElementById('stopButton').addEventListener('click', stopRoutine);
-    document.getElementById('pauseEndButton').addEventListener('click', stopRoutine);
-    document.getElementById('homeButton').addEventListener('click', () => show('home'));
-
-    document.getElementById('homeSettingsButton').addEventListener('click', () => openSettings('home'));
-    document.getElementById('menuSettingsButton').addEventListener('click', () => openSettings('menu'));
-    document.getElementById('settingsBackButton').addEventListener('click', () => show(state.lastScreen));
-
-    document.getElementById('soundSwitch').addEventListener('click', () => toggleSetting('sound'));
-    document.getElementById('vibeSwitch').addEventListener('click', () => toggleSetting('vibe'));
-    document.getElementById('countdownSwitch').addEventListener('click', () => toggleSetting('countdown'));
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible' && screens.timer.classList.contains('active')) {
-        requestWakeLock();
-      }
-    });
-
-    function renderMenu() {
-      menuList.innerHTML = Object.entries(menus).map(([key, menu]) => `
-        <button class="menu-item" data-menu="${key}">
-          <span class="mini-icon">${menu.icon}</span>
-          <span>
-            <span class="menu-title">${menu.label}</span>
-            <span class="menu-desc">${menu.desc}</span>
-          </span>
-          <span style="color:var(--muted);font-size:22px;">›</span>
-        </button>
-      `).join('');
-
-      menuList.querySelectorAll('.menu-item').forEach(button => {
-        button.addEventListener('click', () => {
-          state.selectedKey = button.dataset.menu;
-          preAdTitle.textContent = `${menus[state.selectedKey].label}を始めます`;
-          show('preAd');
-        });
-      });
-    }
-
-    function startSelected() {
-      if (state.settings.countdown) {
-        runCountdown();
-      } else {
-        startRoutine();
-      }
-    }
-
-    function runCountdown() {
-      let count = 3;
-      countdownMenuName.textContent = menus[state.selectedKey].label;
-      countdownNum.textContent = count;
-      show('countdown');
-      beep();
-      const countdownTimer = setInterval(() => {
-        count -= 1;
-        if (count <= 0) {
-          clearInterval(countdownTimer);
-          startRoutine();
-          return;
-        }
-        countdownNum.textContent = count;
-        beep();
-      }, 900);
-    }
-
-    function startRoutine() {
-      clearInterval(state.timer);
-      state.stepIndex = 0;
-      state.stepElapsed = 0;
-      show('timer');
-      requestWakeLock();
-      loadStep();
-      state.timer = setInterval(tick, 1000);
-    }
-
-    function tick() {
-      state.stepElapsed += 1;
-
-      if (state.stepElapsed >= STEP_SECONDS) {
-        state.stepIndex += 1;
-
-        if (state.stepIndex >= getMoves().length) {
-          finishRoutine();
-          return;
-        }
-
-        state.stepElapsed = 0;
-        loadStep();
-        return;
-      }
-
-      updateTimerDisplay();
-    }
-
-    function loadStep() {
-      const moves = getMoves();
-      const menu = menus[state.selectedKey];
-      const move = moves[state.stepIndex];
-
-      routineName.textContent = menu.label;
-      stepCount.textContent = `${state.stepIndex + 1} / ${moves.length}`;
-      stretchName.textContent = move[0];
-      stretchGuide.textContent = move[1];
-
-      pictogram.className = `pictogram ${move[3] || ''}`;
-      pictogram.innerHTML = move[2];
-
-      const next = moves[state.stepIndex + 1];
-      nextMove.textContent = next ? `次：${next[0]}` : '最後です';
-
-      renderStepBlocks(moves.length);
-      updateTimerDisplay();
-      beep();
-      vibrate(70);
-    }
-
-    function updateTimerDisplay() {
-      const moves = getMoves();
-      const totalSeconds = moves.length * STEP_SECONDS;
-      const elapsed = state.stepIndex * STEP_SECONDS + state.stepElapsed;
-      const remaining = Math.max(0, totalSeconds - elapsed);
-      const min = String(Math.floor(remaining / 60)).padStart(2, '0');
-      const sec = String(remaining % 60).padStart(2, '0');
-
-      timeText.textContent = `${min}:${sec}`;
-      totalProgress.style.width = `${(elapsed / totalSeconds) * 100}%`;
-
-      [...stepBlocks.children].forEach((block, index) => {
-        block.classList.toggle('done', index < state.stepIndex);
-        block.classList.toggle('current', index === state.stepIndex);
-      });
-    }
-
-    function renderStepBlocks(length) {
-      stepBlocks.innerHTML = Array.from({ length }, () => `<span class="step-block"></span>`).join('');
-    }
-
-    function pauseRoutine() {
-      clearInterval(state.timer);
-      show('pause');
-      releaseWakeLock();
-    }
-
-    function resumeRoutine() {
-      show('timer');
-      requestWakeLock();
-      clearInterval(state.timer);
-      state.timer = setInterval(tick, 1000);
-    }
-
-    function stopRoutine() {
-      clearInterval(state.timer);
-      releaseWakeLock();
-      show('home');
-    }
-
-    function finishRoutine() {
-      clearInterval(state.timer);
-      releaseWakeLock();
-      vibrate([160, 90, 160]);
-      beep(true);
-      show('complete');
-    }
-
-    function getMoves() {
-      return menus[state.selectedKey].moves;
-    }
-
-    function show(name) {
-      Object.values(screens).forEach(screen => screen.classList.remove('active'));
-      screens[name].classList.add('active');
-    }
-
-    function openSettings(from) {
-      state.lastScreen = from;
-      show('settings');
-    }
-
-    function toggleSetting(key) {
-      state.settings[key] = !state.settings[key];
-      applySwitches();
-    }
-
-    function applySwitches() {
-      document.getElementById('soundSwitch').classList.toggle('on', state.settings.sound);
-      document.getElementById('vibeSwitch').classList.toggle('on', state.settings.vibe);
-      document.getElementById('countdownSwitch').classList.toggle('on', state.settings.countdown);
-    }
-
-    function vibrate(pattern) {
-      if (!state.settings.vibe) return;
-      if (navigator.vibrate) navigator.vibrate(pattern);
-    }
-
-    function beep(done = false) {
-      if (!state.settings.sound) return;
-
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.type = 'sine';
-        osc.frequency.value = done ? 740 : 620;
-        gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.22);
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.24);
-      } catch (error) {
-        // 音が鳴らせない環境では何もしない
-      }
-    }
-
-    async function requestWakeLock() {
-      if (!('wakeLock' in navigator)) return;
-
-      try {
-        state.wakeLock = await navigator.wakeLock.request('screen');
-      } catch (error) {
-        state.wakeLock = null;
-      }
-    }
-
-    async function releaseWakeLock() {
-      if (!state.wakeLock) return;
-
-      try {
-        await state.wakeLock.release();
-      } catch (error) {
-        // 解除できない場合は何もしない
-      }
-
-      state.wakeLock = null;
-    }
-  </script>
+  <div>© 2026 Minite Stretch</div>
+</footer>
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
 </body>
 </html>
