@@ -362,14 +362,6 @@
       transition: width .25s linear;
     }
 
-    .inline-ad {
-      display: none;
-      margin: 0 0 14px;
-    }
-
-    .inline-ad.show {
-      display: grid;
-    }
 
     .reward-box {
       border: 1px solid rgba(246,201,69,.28);
@@ -810,8 +802,6 @@
         <div class="current-time" id="currentTimeText">00:40</div>
         <div class="step-progress"><div id="stepProgress"></div></div>
       </div>
-
-      <div class="inline-ad ad-space" id="inlineAd">広告スペース<br />最後の動作中に表示</div>
 
       <div class="pictogram" id="pictogram"></div>
       <div class="stretch-name" id="stretchName"></div>
@@ -1420,7 +1410,6 @@
     const completeText = document.getElementById('completeText');
     const totalProgress = document.getElementById('totalProgress');
     const stepProgress = document.getElementById('stepProgress');
-    const inlineAd = document.getElementById('inlineAd');
     const claimStarButton = document.getElementById('claimStarButton');
     const rewardMessage = document.getElementById('rewardMessage');
     const starCount = document.getElementById('starCount');
@@ -1578,9 +1567,6 @@
       const next = moves[state.stepIndex + 1];
       const nextText = next ? getMoveText(state.selectedKey, state.stepIndex + 1, next)[0] : '';
       nextMove.textContent = next ? t('next').replace('{name}', nextText) : t('last');
-      inlineAd.innerHTML = t('finalAd');
-      inlineAd.classList.toggle('show', shouldShowInlineAd(move, state.stepIndex, moves.length));
-
       renderStepBlocks(moves.length);
       updateTimerDisplay();
       beep();
