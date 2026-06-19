@@ -738,6 +738,7 @@
         </div>
       </div>
 
+      <button class="sub-button" id="goTowelMenuButton">🧣 タオルストレッチ</button>
       <button class="button" id="goMenuButton" data-i18n="start">はじめる</button>
       <div class="footer-note" data-i18n="medicalNote">医療行為・治療目的ではありません。痛みがある時は中止してください。</div>
     </section>
@@ -755,6 +756,17 @@
         <button class="duration-button" id="durationLongButton" type="button" data-duration="long">6分</button>
       </div>
       <div class="menu-list" id="menuList"></div>
+      <div class="menu-footer" data-i18n="menuFooter">メニュー選択後、開始前に広告が入ります</div>
+    </section>
+
+    <section id="towelMenuScreen" class="screen">
+      <div class="topbar">
+        <button class="icon-button" id="towelMenuBackButton" aria-label="戻る">←</button>
+        <div class="brand">タオルストレッチ</div>
+        <div></div>
+      </div>
+      <h2>どこをほぐす？</h2>
+      <div class="menu-list" id="towelMenuList"></div>
       <div class="menu-footer" data-i18n="menuFooter">メニュー選択後、開始前に広告が入ります</div>
     </section>
 
@@ -1286,6 +1298,70 @@
           ['足裏をほぐす', '床に足裏をつけて軽く動かします。', icons.ankle, 'move-ankle'],
           ['足をぶらぶら', '最後に力を抜いてぶらぶら。', icons.foot, 'move-leg']
         ]
+      },
+      towelNeck: {
+        label: '首・肩タオル',
+        desc: 'タオルで首と肩をゆるめる',
+        icon: icons.neck,
+        moves: [
+          ['タオルを首の後ろに当てる', '両端を持って首に軽く当てます。', icons.neck, 'move-breathe'],
+          ['タオルで首を前に引く', 'あごを引きながら首後ろを伸ばします。', icons.neck, 'move-breathe'],
+          ['タオルで右に引く', '頭を左に傾け、右側を伸ばします。', icons.neck, 'move-neck-left'],
+          ['タオルで左に引く', '頭を右に傾け、左側を伸ばします。', icons.neck, 'move-neck-right'],
+          ['タオルを肩幅で後ろへ', '肩甲骨を軽く引き寄せます。', icons.chest, 'move-side'],
+          ['タオルを頭上に持ち上げる', '脇と肩を伸ばします。', icons.chest, 'move-side'],
+          ['タオルを後ろで水平に持つ', '胸を開いて息を吸います。', icons.chest, 'move-side'],
+          ['肩をゆっくり回す', 'タオルを持ったまま小さく回します。', icons.shoulder, 'move-shoulder'],
+          ['深呼吸して脱力', '吸って、吐いて、力を抜きます。', icons.breathe, 'move-breathe']
+        ]
+      },
+      towelBack: {
+        label: '背中・胸タオル',
+        desc: 'タオルで背中と胸を開く',
+        icon: icons.chest,
+        moves: [
+          ['タオルを頭上で持つ', '両端をしっかり持ちます。', icons.chest, 'move-side'],
+          ['タオルを右へ傾ける', '左の脇腹をゆっくり伸ばします。', icons.side, 'move-side'],
+          ['タオルを左へ傾ける', '右の脇腹をゆっくり伸ばします。', icons.side, 'move-side'],
+          ['タオルを後ろへ下ろす', '胸を開いて肩甲骨を寄せます。', icons.chest, 'move-side'],
+          ['タオルを前に引き背中を丸める', '猫背のように丸めます。', icons.back, 'move-side'],
+          ['タオルで背中を上下にこする', '血行を促します。', icons.back, 'move-side'],
+          ['タオルを肩甲骨に当てて押す', '両手で挟むように押します。', icons.chest, 'move-breathe'],
+          ['タオルを頭上に戻す', '大きく息を吸います。', icons.chest, 'move-side'],
+          ['深呼吸して脱力', '吸って、吐いて、力を抜きます。', icons.breathe, 'move-breathe']
+        ]
+      },
+      towelWaist: {
+        label: '腰タオル',
+        desc: 'タオルで腰まわりをほぐす',
+        icon: icons.waist,
+        moves: [
+          ['タオルを腰に回す', '両端を前で持ちます。', icons.waist, 'move-side'],
+          ['タオルで腰を後ろに押す', '骨盤を前に傾けます。', icons.waist, 'move-side'],
+          ['右の腰を横に伸ばす', 'タオルを持ったまま体を右へ。', icons.side, 'move-side'],
+          ['左の腰を横に伸ばす', 'タオルを持ったまま体を左へ。', icons.side, 'move-side'],
+          ['タオルを持って右にひねる', '腰からゆっくり右へ。', icons.twist, 'move-twist'],
+          ['タオルを持って左にひねる', '腰からゆっくり左へ。', icons.twist, 'move-twist'],
+          ['タオルを足裏に当てて前屈', '無理しない範囲で伸ばします。', icons.back, 'move-side'],
+          ['タオルを腰に当てて反る', '痛くない範囲で少しだけ。', icons.waist, 'move-side'],
+          ['深呼吸して脱力', '吸って、吐いて、力を抜きます。', icons.breathe, 'move-breathe']
+        ]
+      },
+      towelLeg: {
+        label: '足タオル',
+        desc: 'タオルで太もも・ふくらはぎを伸ばす',
+        icon: icons.foot,
+        moves: [
+          ['タオルを右足裏に当てる', '仰向けで足を上げます。', icons.foot, 'move-leg'],
+          ['タオルで右太もも裏を引く', 'ゆっくり引いて伸ばします。', icons.foot, 'move-leg'],
+          ['タオルを左足裏に当てる', '仰向けで足を上げます。', icons.foot, 'move-leg'],
+          ['タオルで左太もも裏を引く', 'ゆっくり引いて伸ばします。', icons.foot, 'move-leg'],
+          ['右ふくらはぎをタオルで伸ばす', '足首を引っ張るように。', icons.foot, 'move-leg'],
+          ['左ふくらはぎをタオルで伸ばす', '足首を引っ張るように。', icons.foot, 'move-leg'],
+          ['右足首をタオルで引く', 'ゆっくり回しながら。', icons.ankle, 'move-ankle'],
+          ['左足首をタオルで引く', 'ゆっくり回しながら。', icons.ankle, 'move-ankle'],
+          ['足をぶらぶら', 'タオルを置いて力を抜きます。', icons.foot, 'move-leg']
+        ]
       }
     };
 
@@ -1381,6 +1457,66 @@
             ['Loosen the soles of your feet', 'Place your feet on the floor and move them lightly.'],
             ['Let your legs relax', 'Let the effort drain out of your legs.']
           ]
+        },
+        towelNeck: {
+          label: 'Neck/shoulder towel',
+          desc: 'Loosen neck and shoulders with a towel',
+          moves: [
+            ['Place towel on back of neck', 'Hold both ends and rest the towel gently.'],
+            ['Pull neck forward with towel', 'Tuck chin and stretch the back of your neck.'],
+            ['Pull right with towel', 'Tilt head left and stretch the right side.'],
+            ['Pull left with towel', 'Tilt head right and stretch the left side.'],
+            ['Hold towel behind at shoulder width', 'Gently draw shoulder blades together.'],
+            ['Lift towel overhead', 'Stretch your sides and shoulders.'],
+            ['Hold towel horizontally behind you', 'Open your chest and breathe in.'],
+            ['Slow shoulder circles', 'Make small, easy circles with the towel in hand.'],
+            ['Deep breath and release', 'Breathe in, breathe out, and let the effort go.']
+          ]
+        },
+        towelBack: {
+          label: 'Back/chest towel',
+          desc: 'Open back and chest with a towel',
+          moves: [
+            ['Hold towel overhead', 'Grip both ends firmly.'],
+            ['Tilt towel to the right', 'Stretch the left side of your torso.'],
+            ['Tilt towel to the left', 'Stretch the right side of your torso.'],
+            ['Lower towel behind you', 'Open your chest and draw shoulder blades together.'],
+            ['Pull towel forward and round back', 'Round your back like a cat.'],
+            ['Rub towel up and down your back', 'Encourage circulation.'],
+            ['Press towel against shoulder blades', 'Squeeze gently from both sides.'],
+            ['Return towel overhead', 'Take a full breath in.'],
+            ['Deep breath and release', 'Breathe in, breathe out, and let the effort go.']
+          ]
+        },
+        towelWaist: {
+          label: 'Lower back towel',
+          desc: 'Loosen lower back with a towel',
+          moves: [
+            ['Wrap towel around lower back', 'Hold both ends in front.'],
+            ['Press towel into lower back', 'Tilt your pelvis forward gently.'],
+            ['Stretch right side with towel', 'Lean body to the right slowly.'],
+            ['Stretch left side with towel', 'Lean body to the left slowly.'],
+            ['Twist right with towel', 'Rotate from your waist slowly.'],
+            ['Twist left with towel', 'Rotate from your waist slowly.'],
+            ['Hook towel on foot and bend forward', 'Stretch only as far as comfortable.'],
+            ['Press towel into back and lean', 'Lean back just a little, no pain.'],
+            ['Deep breath and release', 'Breathe in, breathe out, and let the effort go.']
+          ]
+        },
+        towelLeg: {
+          label: 'Leg towel',
+          desc: 'Stretch thighs and calves with a towel',
+          moves: [
+            ['Hook towel on right foot', 'Lie down and raise your leg.'],
+            ['Pull right leg toward you', 'Stretch the back of your right thigh.'],
+            ['Hook towel on left foot', 'Lie down and raise your leg.'],
+            ['Pull left leg toward you', 'Stretch the back of your left thigh.'],
+            ['Stretch right calf with towel', 'Pull the towel as if pulling your ankle.'],
+            ['Stretch left calf with towel', 'Pull the towel as if pulling your ankle.'],
+            ['Rotate right ankle with towel', 'Circle slowly and gently.'],
+            ['Rotate left ankle with towel', 'Circle slowly and gently.'],
+            ['Let legs relax', 'Put the towel down and release all tension.']
+          ]
         }
       }
     };
@@ -1388,6 +1524,7 @@
     const screens = {
       home: document.getElementById('homeScreen'),
       menu: document.getElementById('menuScreen'),
+      towelMenu: document.getElementById('towelMenuScreen'),
       preAd: document.getElementById('preAdScreen'),
       countdown: document.getElementById('countdownScreen'),
       timer: document.getElementById('timerScreen'),
@@ -1403,6 +1540,7 @@
       timer: null,
       wakeLock: null,
       lastScreen: 'home',
+      lastMenu: 'menu',
       settings: loadSettings(),
       stars: Number(localStorage.getItem(STORAGE_KEYS.stars) || 0),
       starClaimedThisRun: false
@@ -1454,8 +1592,10 @@
     updateStarDisplay();
 
     document.getElementById('goMenuButton').addEventListener('click', () => show('menu'));
+    document.getElementById('goTowelMenuButton').addEventListener('click', () => { renderTowelMenu(); show('towelMenu'); });
     document.getElementById('menuBackButton').addEventListener('click', () => show('home'));
-    document.getElementById('preAdBackButton').addEventListener('click', () => show('menu'));
+    document.getElementById('towelMenuBackButton').addEventListener('click', () => show('home'));
+    document.getElementById('preAdBackButton').addEventListener('click', () => show(state.lastMenu));
     document.getElementById('startSelectedButton').addEventListener('click', startSelected);
     document.getElementById('pauseButton').addEventListener('click', pauseRoutine);
     document.getElementById('resumeButton').addEventListener('click', resumeRoutine);
@@ -1499,6 +1639,30 @@
       menuList.querySelectorAll('.menu-item').forEach(button => {
         button.addEventListener('click', () => {
           state.selectedKey = button.dataset.menu;
+          state.lastMenu = 'menu';
+          preAdTitle.textContent = state.settings.lang === 'en' ? `Start ${getMenuLabel(state.selectedKey)}` : `${getMenuLabel(state.selectedKey)}を始めます`;
+          show('preAd');
+        });
+      });
+    }
+
+    function renderTowelMenu() {
+      const towelList = document.getElementById('towelMenuList');
+      const towelKeys = ['towelNeck', 'towelBack', 'towelWaist', 'towelLeg'];
+      towelList.innerHTML = towelKeys.map(key => `
+        <button class="menu-item" data-menu="${key}">
+          <span class="mini-icon">${menus[key].icon}</span>
+          <span>
+            <span class="menu-title">${getMenuLabel(key)}</span>
+            <span class="menu-desc">${getMenuDesc(key)}</span>
+          </span>
+          <span style="color:var(--muted);font-size:22px;">›</span>
+        </button>
+      `).join('');
+      towelList.querySelectorAll('.menu-item').forEach(button => {
+        button.addEventListener('click', () => {
+          state.selectedKey = button.dataset.menu;
+          state.lastMenu = 'towelMenu';
           preAdTitle.textContent = state.settings.lang === 'en' ? `Start ${getMenuLabel(state.selectedKey)}` : `${getMenuLabel(state.selectedKey)}を始めます`;
           show('preAd');
         });
