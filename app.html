@@ -813,6 +813,12 @@
       <div class="stretch-guide" id="stretchGuide"></div>
       <div class="step-blocks" id="stepBlocks"></div>
       <div class="next" id="nextMove"></div>
+      <div id="inlineAd" class="ad-space" style="display:none;">
+        <a href="https://www.amazon.co.jp/s?k=ストレッチポール&tag=mimilyapp-22" target="_blank" rel="noopener sponsored" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+          <span style="font-size:10px;color:#888;border:1px solid #555;border-radius:3px;padding:1px 5px;flex-shrink:0;">PR</span>
+          <span style="font-size:13px;font-weight:700;">ストレッチポールをAmazonで見る →</span>
+        </a>
+      </div>
 
       <div class="controls">
         <button class="sub-button" id="pauseButton" data-i18n="pause">一時停止</button>
@@ -1581,6 +1587,8 @@
       updateTimerDisplay();
       beep();
       vibrate(70);
+      const inlineAd = document.getElementById('inlineAd');
+      if (inlineAd) inlineAd.style.display = shouldShowInlineAd(move, state.stepIndex, moves.length) ? '' : 'none';
     }
 
     function updateTimerDisplay() {
